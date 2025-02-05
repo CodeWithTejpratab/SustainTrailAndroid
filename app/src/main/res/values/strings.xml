@@ -2,6 +2,12 @@
     <string name="app_name">SustainTrail</string>
 
     <!-- String -->
-    <string name="people_name">Emil/Brandon</string>
+
+
+    <!-- Bottom Navigation Tab -->
+    <string name="home">Home</string>
+    <string name="environmental_news">Environmental News</string>
+    <string name="location">Location</string>
+    <string name="profile">Profile</string>
 
 </resources>

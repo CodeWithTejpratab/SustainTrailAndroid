@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import com.sustenanceandroid.mainScreen.MainScreen
 import com.sustenanceandroid.mainScreen.MainViewModel
+import com.sustenanceandroid.mainScreen.SustenanceApp
 
 class MainActivity : ComponentActivity() {
 
@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MainScreen(viewModel)
+            SustenanceApp(viewModel)
         }
     }
 }

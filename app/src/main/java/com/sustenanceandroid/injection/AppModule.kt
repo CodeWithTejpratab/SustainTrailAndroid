@@ -1,0 +1,13 @@
+package com.sustenanceandroid.injection
+
+import android.content.res.Resources
+import com.sustenanceandroid.application.SustenanceApplication
+
+object AppModule {
+
+    lateinit var application: SustenanceApplication
+
+    fun isInitialized() = ::application.isInitialized
+
+    val resources: Resources by lazy { application.resources }
+}

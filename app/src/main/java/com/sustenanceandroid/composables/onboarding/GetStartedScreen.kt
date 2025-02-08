@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -47,10 +48,12 @@ fun GetStartedScreen(onClick: () -> Unit) {
                 Text(
                     text = stringResource(R.string.starting_page_heading),
                     style = TextStyles.headLine(),
-                    modifier = Modifier.constrainAs(heading) {
-                        bottom.linkTo(image.top, margin = margin)
-                        centerHorizontallyTo(parent)
-                    }
+                    modifier = Modifier
+                        .alpha(0.88f)
+                        .constrainAs(heading) {
+                            bottom.linkTo(image.top, margin = margin)
+                            centerHorizontallyTo(parent)
+                        }
                 )
 
                 Image(

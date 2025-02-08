@@ -10,6 +10,7 @@ lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.0"
 composeBom = "2024.04.01"
 material3 = "1.3.1"
+material3Version = "1.4.0-alpha07"
 materialIconsExtended = "1.7.7"
 ui = "1.7.7"
 navigationRuntimeKtx = "2.8.6"
@@ -22,6 +23,7 @@ constraintlayout = "2.2.0"
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+androidx-material3-v140alpha07 = { module = "androidx.compose.material3:material3", version.ref = "material3Version" }
 androidx-ui-v151 = { module = "androidx.compose.ui:ui", version.ref = "uiVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

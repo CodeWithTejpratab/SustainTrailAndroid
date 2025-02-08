@@ -9,7 +9,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.sp
 import com.sustenanceandroid.R
-import com.sustenanceandroid.ui.theme.PoppinsBold
+import com.sustenanceandroid.ui.theme.Poppins
 
 object TextStyles {
 
@@ -26,7 +26,7 @@ object TextStyles {
 
     @Composable
     fun headLine() = textDefault().copy(
-        fontFamily = PoppinsBold,
+        fontFamily = Poppins,
         fontSize = 38.sp,
         lineHeight = 32.sp,
     )

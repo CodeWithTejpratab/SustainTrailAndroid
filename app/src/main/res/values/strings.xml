@@ -11,9 +11,15 @@
     <string name="profile">Profile</string>
 
     <!-- Onboarding -->
-    <string name="starting_page_heading">Sustain Trail</string>
+    <string name="starting_page_heading">SustainTrail</string>
     <string name="starting_page_image_description">Onboarding starting</string>
     <string name="starting_page_message">"Walk one step closer to a greener Earth"</string>
     <string name="starting_page_button_text">"Get Started"</string>
+
+    <!-- Log In -->
+    <string name="login_page_welcome">Welcome to</string>
+    <string name="login_page_button">Login</string>
+    <string name="login_page_noacct">Don\'t have an account?</string>
+    <string name="login_page_register">Register</string>
 
 </resources>

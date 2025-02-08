@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.material3.v140alpha07)
 
     // Core and Compose essentials
     implementation(libs.androidx.core.ktx)

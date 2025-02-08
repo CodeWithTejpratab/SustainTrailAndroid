@@ -10,4 +10,10 @@
     <string name="location">Location</string>
     <string name="profile">Profile</string>
 
+    <!-- Onboarding -->
+    <string name="starting_page_heading">Sustain Trail</string>
+    <string name="starting_page_image_description">Onboarding starting</string>
+    <string name="starting_page_message">"Walk one step closer to a greener Earth"</string>
+    <string name="starting_page_button_text">"Get Started"</string>
+
 </resources>

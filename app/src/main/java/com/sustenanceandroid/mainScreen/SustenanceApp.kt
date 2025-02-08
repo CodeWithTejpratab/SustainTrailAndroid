@@ -84,7 +84,7 @@ private fun BottomNavBar(navController: NavController, viewModel: MainViewModel)
 }
 
 @Composable
-fun NavigationHost(navController: NavHostController, modifier: Modifier = Modifier) {
+private fun NavigationHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
         startDestination = stringResource(R.string.home),

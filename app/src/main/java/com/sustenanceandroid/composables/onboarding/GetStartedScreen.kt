@@ -20,17 +20,16 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.TextStyles
-import com.sustenanceandroid.ui.theme.StartingGreen
+import com.sustenanceandroid.ui.theme.OnboardingGreen
 
 @Composable
 fun GetStartedScreen(onClick: () -> Unit) {
     Box {
         Image(
-            painter = painterResource(R.drawable.startingpagebackground),
+            painter = painterResource(R.drawable.background),
             contentDescription = null,
             modifier = Modifier.fillMaxSize()
         )
@@ -38,7 +37,7 @@ fun GetStartedScreen(onClick: () -> Unit) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .padding(30.dp)
+                .padding(dimensionResource(R.dimen.on_boarding_box_padding))
                 .fillMaxSize()
         ) {
             ConstraintLayout {
@@ -49,7 +48,7 @@ fun GetStartedScreen(onClick: () -> Unit) {
                     text = stringResource(R.string.starting_page_heading),
                     style = TextStyles.headLine(),
                     modifier = Modifier
-                        .alpha(0.88f)
+                        .alpha(0.73f)
                         .constrainAs(heading) {
                             bottom.linkTo(image.top, margin = margin)
                             centerHorizontallyTo(parent)
@@ -96,7 +95,7 @@ private fun StartingBottomSection(
 
         Button(
             onClick = onClick,
-            colors = ButtonDefaults.buttonColors(StartingGreen),
+            colors = ButtonDefaults.buttonColors(OnboardingGreen),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(dimensionResource(R.dimen.onboarding_button_height))

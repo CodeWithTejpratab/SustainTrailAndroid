@@ -16,5 +16,5 @@ val SelectedIconColor = Color(0xFF18C0C1)
 val UnselectedIconColor = Color(0xFFFFFFFF)
 
 // App Color
-val StartingGreen = Color(0xFF37B943)
+val OnboardingGreen = Color(0xFF37B943)
 val LinkColor = Color(0xFF00E0FF)

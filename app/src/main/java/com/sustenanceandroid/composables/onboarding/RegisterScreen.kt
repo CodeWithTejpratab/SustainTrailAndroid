@@ -51,7 +51,7 @@ fun RegisterScreen(
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isReEnterPasswordVisible by remember { mutableStateOf(false) }
-    var didAgreetoTerms by remember { mutableStateOf(false) }
+    var didAgreeToTerms by remember { mutableStateOf(false) }
     val gutter = dimensionResource(R.dimen.login_gutter)
 
     Box {
@@ -152,8 +152,8 @@ fun RegisterScreen(
                         modifier = Modifier.padding(gutter)
                     ) {
                         RadioButton(
-                            selected = didAgreetoTerms,
-                            onClick = { didAgreetoTerms = !didAgreetoTerms }
+                            selected = didAgreeToTerms,
+                            onClick = { didAgreeToTerms = !didAgreeToTerms }
                         )
 
                         Text(

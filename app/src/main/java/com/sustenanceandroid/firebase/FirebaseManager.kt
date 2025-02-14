@@ -7,32 +7,40 @@ import com.google.firebase.auth.auth
 class FirebaseManager {
     private var auth: FirebaseAuth = Firebase.auth
 
-    private val currentUser = auth.currentUser
+    private var currentUser = auth.currentUser
 
-    fun isUserLoggedIn(): Boolean {
-        return currentUser != null
-    }
+    val isUserLoggedIn: Boolean
+        get() = currentUser != null
 
-    fun createAccount(email: String, password: String): Boolean {
-        var isCreateSuccessful = false
+    fun createAccount(email: String, password: String, callback: (Boolean) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    isCreateSuccessful = true
+                    callback(true)
+                } else {
+                    callback(false)
                 }
             }
-        return isCreateSuccessful
     }
 
-    fun singIn(email: String, password: String): Boolean {
-        var isSingSuccessful = false
+    fun singIn(email: String, password: String, callback: (Boolean) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    isSingSuccessful = true
+                    callback(true)
+                } else {
+                    callback(false)
                 }
             }
-        return isSingSuccessful
+    }
+
+    fun signOut(): Boolean {
+        return try {
+            auth.signOut()
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
     fun getUserId(): String? {

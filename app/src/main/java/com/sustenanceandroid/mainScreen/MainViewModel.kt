@@ -1,6 +1,5 @@
 package com.sustenanceandroid.mainScreen
 
-import android.app.Application
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Dehaze
 import androidx.compose.material.icons.filled.Home
@@ -11,13 +10,13 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import com.sustenanceandroid.R
 import com.sustenanceandroid.injection.AppModule.resources
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel : ViewModel() {
 
     data class BottomNavItem(
         val title: String,

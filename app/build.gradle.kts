@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("org.jlleitschuh.gradle.ktlint")
+    alias(libs.plugins.google.gms.google.services)
+    kotlin("plugin.serialization") version "2.1.10"
 }
 
 android {
@@ -15,7 +17,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -52,6 +53,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.material3.v140alpha07)
 
     // Core and Compose essentials
     implementation(libs.androidx.core.ktx)
@@ -65,7 +67,12 @@ dependencies {
 
     // Navigation
     implementation(libs.androidx.navigation.runtime.ktx)
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.navigation.compose.v287)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
 
     // Testing dependencies
     testImplementation(libs.junit)
@@ -77,4 +84,7 @@ dependencies {
     // Debug dependencies
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 }

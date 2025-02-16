@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "481469727072",
+    "project_id": "sustaintrail-aa334",
+    "storage_bucket": "sustaintrail-aa334.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481469727072:android:7e1ecd6087762783001e05",
+        "android_client_info": {
+          "package_name": "com.sustenanceandroid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbwN9aoWCVbWj3tq7sYr0GShckc19D7RQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

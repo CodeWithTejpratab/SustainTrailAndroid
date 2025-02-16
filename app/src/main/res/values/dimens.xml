@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Onboarding -->
+    <dimen name="on_boarding_box_padding">30dp</dimen>
+    <dimen name="starting_page_margin">20dp</dimen>
+    <dimen name="onboarding_button_height">50dp</dimen>
+    <dimen name="login_password_margin">16dp</dimen>
+    <dimen name="login_button_padding">24dp</dimen>
+    <dimen name="login_gutter">4dp</dimen>
+
+</resources>

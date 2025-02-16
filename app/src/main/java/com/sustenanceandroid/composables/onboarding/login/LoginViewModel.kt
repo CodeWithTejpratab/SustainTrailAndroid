@@ -1,0 +1,89 @@
+package com.sustenanceandroid.composables.onboarding.login
+
+import androidx.lifecycle.ViewModel
+import com.sustenanceandroid.injection.AppModule.firebaseManager
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+
+open class LoginViewModel : ViewModel() {
+
+    data class RegisterViewState(
+        val userName: String = "",
+        val email: String = "",
+        val password: String = "",
+        val retypedPassword: String = "",
+        val location: String = "",
+        val showError: Boolean = false
+    )
+
+    data class LoginViewState(
+        val userName: String = "",
+        val password: String = ""
+    )
+
+    private val _loginViewState = MutableStateFlow(LoginViewState())
+    val loginViewState = _loginViewState.asStateFlow()
+
+    private val _registerViewState = MutableStateFlow(RegisterViewState())
+    val registerViewState = _registerViewState.asStateFlow()
+
+    fun updateLoginUserName(userName: String) {
+        _loginViewState.update {
+            it.copy(userName = userName)
+        }
+    }
+
+    fun updateLoginPassword(password: String) {
+        _loginViewState.update {
+            it.copy(password = password)
+        }
+    }
+
+    fun updateRegisterUserName(userName: String) {
+        _registerViewState.update {
+            it.copy(userName = userName)
+        }
+    }
+
+    fun updateRegisterEmail(email: String) {
+        _registerViewState.update {
+            it.copy(email = email)
+        }
+    }
+
+    fun updateRegisterPassword(password: String) {
+        _registerViewState.update {
+            it.copy(password = password)
+        }
+    }
+
+    fun updateRegisterRetypedPassword(password: String) {
+        _registerViewState.update {
+            it.copy(retypedPassword = password)
+        }
+    }
+
+    fun updateRegisterLocation(location: String) {
+        _registerViewState.update {
+            it.copy(location = location)
+        }
+    }
+
+    fun registerUser(didAgreeToTerm: Boolean) {
+        if (!didAgreeToTerm && _registerViewState.value.email.isEmpty() && _registerViewState.value.password.isEmpty()) return
+
+        firebaseManager.createAccount(_registerViewState.value.email, _registerViewState.value.password) { success ->
+            if (!success) {
+                _registerViewState.update { it.copy(showError = true) }
+            }
+        }
+    }
+
+    fun loginUser() {
+        if (_registerViewState.value.email.isEmpty() && _registerViewState.value.password.isEmpty()) return
+        firebaseManager.singIn(
+            _loginViewState.value.userName, _loginViewState.value.password
+        ) { _ -> }
+    }
+}

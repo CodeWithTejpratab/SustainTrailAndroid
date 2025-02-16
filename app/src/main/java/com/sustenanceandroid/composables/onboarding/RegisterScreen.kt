@@ -1,7 +1,6 @@
 package com.sustenanceandroid.composables.onboarding
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,18 +39,24 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.TextStyles
-import com.sustenanceandroid.ui.theme.LinkColor
+import com.sustenanceandroid.composables.onboarding.login.LoginViewModel
 import com.sustenanceandroid.ui.theme.OnboardingGreen
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun RegisterScreen(
-    onRegisterClick: () -> Unit,
-    onSignInClick: () -> Unit
+    registerViewState: LoginViewModel.RegisterViewState,
+    onUserNameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onRetypedPasswordChange: (String) -> Unit,
+    onLocationChange: (String) -> Unit,
+    onRegister: (Boolean) -> Unit
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
     var isReEnterPasswordVisible by remember { mutableStateOf(false) }
     var didAgreeToTerms by remember { mutableStateOf(false) }
+
     val gutter = dimensionResource(R.dimen.login_gutter)
 
     Box {
@@ -60,7 +65,6 @@ fun RegisterScreen(
             contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(end = gutter)
         )
 
         Box(
@@ -69,9 +73,7 @@ fun RegisterScreen(
                 .fillMaxSize()
                 .padding(dimensionResource(R.dimen.on_boarding_box_padding))
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
                     painter = painterResource(R.drawable.welcomemessage),
                     contentDescription = null,
@@ -82,63 +84,42 @@ fun RegisterScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.login_password_margin))
                 ) {
-
                     OutlinedTextField(
-                        value = "",
+                        value = registerViewState.userName,
                         placeholder = { Text(stringResource(R.string.login_username)) },
-                        onValueChange = { },
+                        isError = registerViewState.showError,
+                        onValueChange = onUserNameChange,
                     )
 
                     OutlinedTextField(
-                        value = "",
+                        value = registerViewState.email,
                         placeholder = { Text(stringResource(R.string.register_page_email)) },
-                        onValueChange = { },
+                        isError = registerViewState.showError,
+                        onValueChange = onEmailChange,
+                    )
+
+                    PasswordField(
+                        value = registerViewState.password,
+                        placeholder = stringResource(R.string.login_password),
+                        isVisible = isPasswordVisible,
+                        isError = registerViewState.showError,
+                        onVisibilityChange = { isPasswordVisible = it },
+                        onValueChange = onPasswordChange
+                    )
+
+                    PasswordField(
+                        value = registerViewState.retypedPassword,
+                        placeholder = stringResource(R.string.register_page_password),
+                        isVisible = isReEnterPasswordVisible,
+                        isError = registerViewState.showError,
+                        onVisibilityChange = { isReEnterPasswordVisible = it },
+                        onValueChange = onRetypedPasswordChange
                     )
 
                     OutlinedTextField(
-                        value = "",
-                        placeholder = { Text(stringResource(R.string.login_password)) },
-                        onValueChange = { },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        trailingIcon = {
-                            IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-                                Icon(
-                                    imageVector = if (isPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                                    contentDescription = if (isPasswordVisible) {
-                                        stringResource(R.string.password_content_description_hide)
-                                    } else {
-                                        stringResource(R.string.password_content_description_show)
-                                    }
-                                )
-                            }
-                        }
-                    )
-
-                    OutlinedTextField(
-                        value = "",
-                        placeholder = { Text(stringResource(R.string.register_page_password)) },
-                        onValueChange = { },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                        visualTransformation = if (isReEnterPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        trailingIcon = {
-                            IconButton(onClick = { isReEnterPasswordVisible = !isReEnterPasswordVisible }) {
-                                Icon(
-                                    imageVector = if (isReEnterPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                                    contentDescription = if (isReEnterPasswordVisible) {
-                                        stringResource(R.string.password_content_description_hide)
-                                    } else {
-                                        stringResource(R.string.password_content_description_show)
-                                    }
-                                )
-                            }
-                        }
-                    )
-
-                    OutlinedTextField(
-                        value = "",
+                        value = registerViewState.location,
                         placeholder = { Text(stringResource(R.string.register_page_location)) },
-                        onValueChange = { },
+                        onValueChange = onLocationChange,
                     )
                 }
 
@@ -146,7 +127,6 @@ fun RegisterScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(gutter)
                 ) {
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(gutter)
@@ -166,7 +146,7 @@ fun RegisterScreen(
                     }
 
                     Button(
-                        onClick = onRegisterClick,
+                        onClick = { onRegister(didAgreeToTerms) },
                         colors = ButtonDefaults.buttonColors(OnboardingGreen),
                         shape = ButtonDefaults.squareShape,
                         modifier = Modifier
@@ -180,35 +160,52 @@ fun RegisterScreen(
                         )
                     }
                 }
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(gutter),
-                    modifier = Modifier.padding(top = gutter)
-                ) {
-                    Text(
-                        text = stringResource(R.string.register_page_account),
-                        style = TextStyles.normalText1().copy(
-                            color = Color.Black,
-                            fontWeight = FontWeight.Normal
-                        )
-                    )
-
-                    Text(
-                        text = stringResource(R.string.register_page_login),
-                        style = TextStyles.normalText1().copy(
-                            color = LinkColor,
-                            fontWeight = FontWeight.Normal
-                        ),
-                        modifier = Modifier.clickable { onSignInClick() }
-                    )
-                }
             }
         }
     }
 }
 
-@Preview
 @Composable
-private fun RegisterScreenPreview() {
-    RegisterScreen(onRegisterClick = {}, onSignInClick = {})
+private fun PasswordField(
+    value: String,
+    placeholder: String,
+    isVisible: Boolean,
+    isError: Boolean,
+    onVisibilityChange: (Boolean) -> Unit,
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = value,
+        placeholder = { Text(placeholder) },
+        onValueChange = onValueChange,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        visualTransformation = if (isVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        isError = isError,
+        trailingIcon = {
+            IconButton(onClick = { onVisibilityChange(!isVisible) }) {
+                Icon(
+                    imageVector = if (isVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                    contentDescription = if (isVisible) {
+                        stringResource(R.string.password_content_description_hide)
+                    } else {
+                        stringResource(R.string.password_content_description_show)
+                    }
+                )
+            }
+        }
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RegisterScreenPreview() {
+    RegisterScreen(
+        registerViewState = LoginViewModel.RegisterViewState(),
+        onUserNameChange = {},
+        onEmailChange = {},
+        onPasswordChange = {},
+        onRetypedPasswordChange = {},
+        onLocationChange = {},
+        onRegister = {}
+    )
 }

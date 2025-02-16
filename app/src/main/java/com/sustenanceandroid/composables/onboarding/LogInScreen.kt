@@ -40,13 +40,17 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.TextStyles
+import com.sustenanceandroid.composables.onboarding.login.LoginViewModel
 import com.sustenanceandroid.ui.theme.LinkColor
 import com.sustenanceandroid.ui.theme.OnboardingGreen
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun LogInScreen(
-    onLoginClick: () -> Unit,
+    loginViewState: LoginViewModel.LoginViewState,
+    onUserNameChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onLogin: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
     var isPasswordVisible by remember { mutableStateOf(false) }
@@ -85,15 +89,15 @@ fun LogInScreen(
                 ) {
 
                     OutlinedTextField(
-                        value = "",
+                        value = loginViewState.userName,
                         placeholder = { Text(stringResource(R.string.login_username)) },
-                        onValueChange = { },
+                        onValueChange = onUserNameChange,
                     )
 
                     OutlinedTextField(
-                        value = "",
+                        value = loginViewState.password,
                         placeholder = { Text(stringResource(R.string.login_password)) },
-                        onValueChange = { },
+                        onValueChange = onPasswordChange,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         trailingIcon = {
@@ -111,7 +115,7 @@ fun LogInScreen(
                     )
 
                     Button(
-                        onClick = onLoginClick,
+                        onClick = onLogin,
                         colors = ButtonDefaults.buttonColors(OnboardingGreen),
                         shape = ButtonDefaults.squareShape,
                         modifier = Modifier
@@ -156,5 +160,11 @@ fun LogInScreen(
 @Preview
 @Composable
 private fun LogInScreenPreview() {
-    LogInScreen(onLoginClick = {}, onRegisterClick = {})
+    LogInScreen(
+        loginViewState = LoginViewModel.LoginViewState(),
+        onUserNameChange = { },
+        onPasswordChange = { },
+        onLogin = { },
+        onRegisterClick = { }
+    )
 }

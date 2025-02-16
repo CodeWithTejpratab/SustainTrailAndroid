@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -19,12 +20,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.sustenanceandroid.R
+import com.sustenanceandroid.composables.onboarding.login.Nav
+import com.sustenanceandroid.composables.onboarding.login.onboardLogin
+import com.sustenanceandroid.injection.AppModule.firebaseManager
 import com.sustenanceandroid.injection.AppModule.resources
 import com.sustenanceandroid.ui.theme.NavBarGreen
 import com.sustenanceandroid.ui.theme.SelectedIconColor
@@ -32,17 +38,44 @@ import com.sustenanceandroid.ui.theme.SustenanceAndroidTheme
 import com.sustenanceandroid.ui.theme.UnselectedIconColor
 
 @Composable
-fun SustenanceApp(viewModel: MainViewModel) {
-
+fun SustenanceApp() {
+    val viewModel: MainViewModel = viewModel()
     val navController: NavHostController = rememberNavController()
 
     SustenanceAndroidTheme {
-        Scaffold(
-            bottomBar = { BottomNavBar(navController, viewModel) },
-            modifier = Modifier.fillMaxSize()
-        ) { innerPadding ->
-            NavigationHost(navController, Modifier.padding(innerPadding))
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .systemBarsPadding()
+        ) {
+            NavHost(
+                navController = navController,
+                startDestination = if (!firebaseManager.isUserLoggedIn) Nav.LoginFlow.route else Nav.MainApp.route
+            ) {
+                navigation(
+                    startDestination = Nav.GetStarted.route,
+                    route = Nav.LoginFlow.route
+                ) {
+                    onboardLogin(navController)
+                }
+
+                composable(Nav.MainApp.route) {
+                    MainApp(navController, viewModel)
+                }
+            }
         }
+    }
+}
+
+@Composable
+private fun MainApp(navController: NavHostController, viewModel: MainViewModel) {
+
+    val mainNavController = rememberNavController()
+
+    Scaffold(
+        bottomBar = { BottomNavBar(mainNavController, viewModel) },
+    ) { innerPadding ->
+        NavigationHost(navController, mainNavController, Modifier.padding(innerPadding))
     }
 }
 
@@ -59,7 +92,7 @@ private fun BottomNavBar(navController: NavController, viewModel: MainViewModel)
             }
 
             NavigationBarItem(
-                selected = navController.currentDestination?.route == item.title,
+                selected = false,
                 onClick = {
                     viewModel.onNavigationItemSelected(index)
                     navController.navigate(item.title)
@@ -84,9 +117,13 @@ private fun BottomNavBar(navController: NavController, viewModel: MainViewModel)
 }
 
 @Composable
-private fun NavigationHost(navController: NavHostController, modifier: Modifier = Modifier) {
+private fun NavigationHost(
+    outerNavController: NavHostController,
+    innerNavController: NavHostController,
+    modifier: Modifier = Modifier
+) {
     NavHost(
-        navController = navController,
+        navController = innerNavController,
         startDestination = stringResource(R.string.home),
         modifier = modifier
     ) {

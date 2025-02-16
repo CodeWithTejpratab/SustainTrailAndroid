@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("org.jlleitschuh.gradle.ktlint")
     alias(libs.plugins.google.gms.google.services)
+    kotlin("plugin.serialization") version "2.1.10"
 }
 
 android {
@@ -66,8 +67,8 @@ dependencies {
 
     // Navigation
     implementation(libs.androidx.navigation.runtime.ktx)
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.navigation.compose.v287)
 
     // Firebase
     implementation(platform(libs.firebase.bom))
@@ -83,4 +84,7 @@ dependencies {
     // Debug dependencies
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 }

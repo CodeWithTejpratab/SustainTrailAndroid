@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -78,6 +79,7 @@ fun GetStartedScreen(onClick: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun StartingBottomSection(
     onClick: () -> Unit,
@@ -96,6 +98,7 @@ private fun StartingBottomSection(
         Button(
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(OnboardingGreen),
+            shape = ButtonDefaults.squareShape,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(dimensionResource(R.dimen.onboarding_button_height))

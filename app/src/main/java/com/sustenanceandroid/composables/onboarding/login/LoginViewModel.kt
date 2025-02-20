@@ -1,12 +1,12 @@
 package com.sustenanceandroid.composables.onboarding.login
 
-import androidx.lifecycle.ViewModel
-import com.sustenanceandroid.injection.AppModule.firebaseManager
+import com.sustenanceandroid.injection.AppModule.firebaseAuthManager
+import com.sustenanceandroid.mainScreen.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-open class LoginViewModel : ViewModel() {
+class LoginViewModel : BaseViewModel() {
 
     data class RegisterViewState(
         val userName: String = "",
@@ -19,7 +19,8 @@ open class LoginViewModel : ViewModel() {
 
     data class LoginViewState(
         val userName: String = "",
-        val password: String = ""
+        val password: String = "",
+        val showError: Boolean = false
     )
 
     private val _loginViewState = MutableStateFlow(LoginViewState())
@@ -30,37 +31,37 @@ open class LoginViewModel : ViewModel() {
 
     fun updateLoginUserName(userName: String) {
         _loginViewState.update {
-            it.copy(userName = userName)
+            it.copy(userName = userName, showError = false)
         }
     }
 
     fun updateLoginPassword(password: String) {
         _loginViewState.update {
-            it.copy(password = password)
+            it.copy(password = password, showError = false)
         }
     }
 
     fun updateRegisterUserName(userName: String) {
         _registerViewState.update {
-            it.copy(userName = userName)
+            it.copy(userName = userName, showError = false)
         }
     }
 
     fun updateRegisterEmail(email: String) {
         _registerViewState.update {
-            it.copy(email = email)
+            it.copy(email = email, showError = false)
         }
     }
 
     fun updateRegisterPassword(password: String) {
         _registerViewState.update {
-            it.copy(password = password)
+            it.copy(password = password, showError = false)
         }
     }
 
     fun updateRegisterRetypedPassword(password: String) {
         _registerViewState.update {
-            it.copy(retypedPassword = password)
+            it.copy(retypedPassword = password, showError = false)
         }
     }
 
@@ -73,17 +74,24 @@ open class LoginViewModel : ViewModel() {
     fun registerUser(didAgreeToTerm: Boolean) {
         if (!didAgreeToTerm && _registerViewState.value.email.isEmpty() && _registerViewState.value.password.isEmpty()) return
 
-        firebaseManager.createAccount(_registerViewState.value.email, _registerViewState.value.password) { success ->
-            if (!success) {
-                _registerViewState.update { it.copy(showError = true) }
+        launchCatchingBlock {
+            firebaseAuthManager.createAccount(
+                _registerViewState.value.email, _registerViewState.value.password
+            ) { success ->
+                if (!success) _registerViewState.update { it.copy(showError = true) }
             }
         }
     }
 
     fun loginUser() {
-        if (_registerViewState.value.email.isEmpty() && _registerViewState.value.password.isEmpty()) return
-        firebaseManager.singIn(
-            _loginViewState.value.userName, _loginViewState.value.password
-        ) { _ -> }
+        if (loginViewState.value.userName.isEmpty() && loginViewState.value.password.isEmpty()) return
+
+        launchCatchingBlock {
+            firebaseAuthManager.singIn(
+                _loginViewState.value.userName, _loginViewState.value.password
+            ) { success ->
+                if (!success) _loginViewState.update { it.copy(showError = true) }
+            }
+        }
     }
 }

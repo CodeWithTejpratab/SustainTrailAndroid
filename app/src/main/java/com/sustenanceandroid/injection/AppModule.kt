@@ -1,8 +1,10 @@
 package com.sustenanceandroid.injection
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Resources
 import com.sustenanceandroid.application.SustenanceApplication
-import com.sustenanceandroid.firebase.FirebaseManager
+import com.sustenanceandroid.firebase.FirebaseAuthManager
 
 object AppModule {
 
@@ -10,7 +12,15 @@ object AppModule {
 
     fun isInitialized() = ::application.isInitialized
 
+    private const val PREFS_FILE_NAME = "Config"
+
     val resources: Resources by lazy { application.resources }
 
-    val firebaseManager: FirebaseManager by lazy { FirebaseManager() }
+    val firebaseAuthManager: FirebaseAuthManager by lazy { FirebaseAuthManager() }
+
+    val context: Context by lazy { application.applicationContext }
+
+    val sharedPreferences: SharedPreferences by lazy {
+        application.getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE)
+    }
 }

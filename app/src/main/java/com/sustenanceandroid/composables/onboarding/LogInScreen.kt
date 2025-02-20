@@ -91,12 +91,14 @@ fun LogInScreen(
                     OutlinedTextField(
                         value = loginViewState.userName,
                         placeholder = { Text(stringResource(R.string.login_username)) },
+                        isError = loginViewState.showError,
                         onValueChange = onUserNameChange,
                     )
 
                     OutlinedTextField(
                         value = loginViewState.password,
                         placeholder = { Text(stringResource(R.string.login_password)) },
+                        isError = loginViewState.showError,
                         onValueChange = onPasswordChange,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),

@@ -11,15 +11,19 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -30,17 +34,29 @@ import androidx.navigation.compose.rememberNavController
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.onboarding.login.Nav
 import com.sustenanceandroid.composables.onboarding.login.onboardLogin
-import com.sustenanceandroid.injection.AppModule.firebaseManager
+import com.sustenanceandroid.injection.AppModule.firebaseAuthManager
 import com.sustenanceandroid.injection.AppModule.resources
 import com.sustenanceandroid.ui.theme.NavBarGreen
 import com.sustenanceandroid.ui.theme.SelectedIconColor
 import com.sustenanceandroid.ui.theme.SustenanceAndroidTheme
 import com.sustenanceandroid.ui.theme.UnselectedIconColor
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Composable
-fun SustenanceApp() {
-    val viewModel: MainViewModel = viewModel()
-    val navController: NavHostController = rememberNavController()
+fun SustenanceApp(
+    viewModel: MainViewModel = viewModel(),
+    navController: NavHostController = rememberNavController()
+) {
+    val selectedIndex by viewModel.selectedIndex.collectAsStateWithLifecycle()
+    val loggedInStatus by viewModel.loggedInStatus.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        firebaseAuthManager.currentUser
+            .distinctUntilChanged()
+            .collect { user ->
+                viewModel.updateLoggedInStatus(user != null)
+            }
+    }
 
     SustenanceAndroidTheme {
         Box(
@@ -50,7 +66,7 @@ fun SustenanceApp() {
         ) {
             NavHost(
                 navController = navController,
-                startDestination = if (!firebaseManager.isUserLoggedIn) Nav.LoginFlow.route else Nav.MainApp.route
+                startDestination = if (!loggedInStatus) Nav.LoginFlow.route else Nav.MainApp.route
             ) {
                 navigation(
                     startDestination = Nav.GetStarted.route,
@@ -60,7 +76,11 @@ fun SustenanceApp() {
                 }
 
                 composable(Nav.MainApp.route) {
-                    MainApp(navController, viewModel)
+                    MainApp(
+                        list = viewModel.items,
+                        selectedIndex = selectedIndex,
+                        onNavigationItemSelected = viewModel::onNavigationItemSelected
+                    )
                 }
             }
         }
@@ -68,33 +88,44 @@ fun SustenanceApp() {
 }
 
 @Composable
-private fun MainApp(navController: NavHostController, viewModel: MainViewModel) {
-
-    val mainNavController = rememberNavController()
+private fun MainApp(
+    list: List<MainViewModel.BottomNavItem>,
+    selectedIndex: Int,
+    onNavigationItemSelected: (Int) -> Unit
+) {
+    val navController = rememberNavController()
 
     Scaffold(
-        bottomBar = { BottomNavBar(mainNavController, viewModel) },
+        bottomBar = {
+            BottomNavBar(
+                navController = navController,
+                items = list,
+                selectedIndex = selectedIndex,
+                onNavigationItemSelected = onNavigationItemSelected
+            )
+        },
     ) { innerPadding ->
-        NavigationHost(navController, mainNavController, Modifier.padding(innerPadding))
+        NavigationHost(navController, Modifier.padding(innerPadding))
     }
 }
 
 @Composable
-private fun BottomNavBar(navController: NavController, viewModel: MainViewModel) {
-
-    val selectedIndex by viewModel.selectedIndex.collectAsState()
-
+private fun BottomNavBar(
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    navController: NavController,
+    items: List<MainViewModel.BottomNavItem>,
+    selectedIndex: Int,
+    onNavigationItemSelected: (Int) -> Unit
+) {
     NavigationBar(containerColor = NavBarGreen) {
-        viewModel.items.forEachIndexed { index, item ->
+        items.forEachIndexed { index, item ->
 
-            val isSelected by remember {
-                derivedStateOf { selectedIndex == index }
-            }
+            val isSelected = selectedIndex == index
 
             NavigationBarItem(
                 selected = false,
                 onClick = {
-                    viewModel.onNavigationItemSelected(index)
+                    onNavigationItemSelected(index)
                     navController.navigate(item.title)
                 },
                 icon = {
@@ -114,16 +145,28 @@ private fun BottomNavBar(navController: NavController, viewModel: MainViewModel)
             )
         }
     }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_START && firebaseAuthManager.isUserLoggedIn) {
+                onNavigationItemSelected(0)
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 }
 
 @Composable
 private fun NavigationHost(
-    outerNavController: NavHostController,
-    innerNavController: NavHostController,
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     NavHost(
-        navController = innerNavController,
+        navController = navController,
         startDestination = stringResource(R.string.home),
         modifier = modifier
     ) {

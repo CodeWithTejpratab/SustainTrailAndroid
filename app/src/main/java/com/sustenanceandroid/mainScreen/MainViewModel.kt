@@ -12,9 +12,11 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import com.sustenanceandroid.R
+import com.sustenanceandroid.injection.AppModule.firebaseAuthManager
 import com.sustenanceandroid.injection.AppModule.resources
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class MainViewModel : ViewModel() {
 
@@ -34,7 +36,14 @@ class MainViewModel : ViewModel() {
     private val _selectedIndex = MutableStateFlow(0)
     val selectedIndex: StateFlow<Int> = _selectedIndex
 
+    private val _loggedInStatus = MutableStateFlow(firebaseAuthManager.isUserLoggedIn)
+    val loggedInStatus = _loggedInStatus.asStateFlow()
+
     fun onNavigationItemSelected(index: Int) {
         _selectedIndex.value = index
+    }
+
+    fun updateLoggedInStatus(b: Boolean) {
+        _loggedInStatus.value = b
     }
 }

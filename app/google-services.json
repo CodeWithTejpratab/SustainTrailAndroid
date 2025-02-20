@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "481469727072",
-    "project_id": "sustaintrail-aa334",
-    "storage_bucket": "sustaintrail-aa334.firebasestorage.app"
+    "project_number": "451623986529",
+    "project_id": "sustaintrails-ccb97",
+    "storage_bucket": "sustaintrails-ccb97.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:481469727072:android:7e1ecd6087762783001e05",
+        "mobilesdk_app_id": "1:451623986529:android:57bf31de28a8c4c5569120",
         "android_client_info": {
           "package_name": "com.sustenanceandroid"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAbwN9aoWCVbWj3tq7sYr0GShckc19D7RQ"
+          "current_key": "AIzaSyDt8WKf7cDpukCVANlRg9L2VfN5QETbYfg"
         }
       ],
       "services": {

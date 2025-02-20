@@ -3,8 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("org.jlleitschuh.gradle.ktlint")
-    alias(libs.plugins.google.gms.google.services)
     kotlin("plugin.serialization") version "2.1.10"
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -71,7 +71,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose.v287)
 
     // Firebase
-    implementation(platform(libs.firebase.bom))
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
     implementation(libs.firebase.auth)
 
     // Testing dependencies

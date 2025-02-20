@@ -39,14 +39,7 @@ fun NavGraphBuilder.onboardLogin(navController: NavHostController) {
             loginViewState = loginViewState,
             onUserNameChange = viewModel::updateLoginUserName,
             onPasswordChange = viewModel::updateLoginPassword,
-            onLogin = {
-                viewModel.loginUser()
-                navController.navigate(Nav.MainApp.route) {
-                    popUpTo(Nav.LoginFlow.route) {
-                        inclusive = true
-                    }
-                }
-            },
+            onLogin = viewModel::loginUser,
             onRegisterClick = {
                 navController.navigate(Nav.Register.route)
             }

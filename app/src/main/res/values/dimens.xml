@@ -9,4 +9,9 @@
     <dimen name="login_button_padding">24dp</dimen>
     <dimen name="login_gutter">4dp</dimen>
 
+    <!-- Sustain Score -->
+    <dimen name="sustain_score_box_size">200dp</dimen>
+    <dimen name="sustain_score_break_down_padding">12dp</dimen>
+    <dimen name="sustain_score_spacing">20dp</dimen>
+
 </resources>

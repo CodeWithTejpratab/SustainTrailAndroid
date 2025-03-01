@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
-data class User(val id: String = "")
-
 class FirebaseAuthManager {
+    data class User(val id: String = "")
+
     private var auth: FirebaseAuth = Firebase.auth
 
     val currentUser: Flow<User?>
@@ -32,22 +32,14 @@ class FirebaseAuthManager {
     suspend fun createAccount(email: String, password: String, callback: (Boolean) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    callback(true)
-                } else {
-                    callback(false)
-                }
+                callback(task.isSuccessful)
             }.await()
     }
 
     suspend fun singIn(email: String, password: String, callback: (Boolean) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    callback(true)
-                } else {
-                    callback(false)
-                }
+                callback(task.isSuccessful)
             }.await()
     }
 

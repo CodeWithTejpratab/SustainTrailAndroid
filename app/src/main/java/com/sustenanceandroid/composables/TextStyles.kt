@@ -36,4 +36,11 @@ object TextStyles {
         fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp
     )
+
+    @Composable
+    fun scoreText() = textDefault().copy(
+        fontSize = 24.sp,
+        fontFamily = Poppins,
+        fontWeight = FontWeight.Bold
+    )
 }

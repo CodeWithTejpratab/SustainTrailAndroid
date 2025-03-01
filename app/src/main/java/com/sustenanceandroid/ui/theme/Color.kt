@@ -1,5 +1,6 @@
 package com.sustenanceandroid.ui.theme
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val Purple80 = Color(0xFFD0BCFF)
@@ -18,3 +19,10 @@ val UnselectedIconColor = Color(0xFFFFFFFF)
 // App Color
 val OnboardingGreen = Color(0xFF37B943)
 val LinkColor = Color(0xFF00E0FF)
+val TransparentBrush = Brush.linearGradient(colors = listOf(Color.Transparent, Color.Transparent))
+
+// Sustain Score
+val SustainScoreGreen = Color(0xFF64C87B)
+val SustainScoreBlue = Brush.linearGradient(listOf(Color(0xFF6EE7B7), Color(0xFF3DAFE6)))
+val SustainScoreOrange = Brush.linearGradient(listOf(Color(0xFFFFB76B), Color(0xFFFFA259)))
+val SustainScorePink = Brush.linearGradient(listOf(Color(0xFFF88F9C), Color(0xFFE36D88)))

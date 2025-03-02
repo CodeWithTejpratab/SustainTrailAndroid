@@ -2,6 +2,7 @@ package com.sustenanceandroid.composables
 
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -42,5 +43,12 @@ object TextStyles {
         fontSize = 24.sp,
         fontFamily = Poppins,
         fontWeight = FontWeight.Bold
+    )
+
+    @Composable
+    fun panelText() = textDefault().copy(
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color.Black
     )
 }

@@ -52,11 +52,17 @@ fun SustainScore(
 
     Box {
         Column(
-            verticalArrangement = Arrangement.spacedBy(
-                dimensionResource(R.dimen.sustain_score_spacing)
-            ),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.sustain_score_spacing)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Text(
+                text = stringResource(R.string.sustain_score),
+                style = TextStyles.headLine().copy(
+                    fontSize = 32.sp
+                )
+            )
+
             scoreData.data?.takeIf { it.isNotEmpty() }?.let { chartData ->
                 DonutChart(
                     chartData,
@@ -241,4 +247,32 @@ private fun SustainScoreErrorPreview() {
         scoreInfo = emptyList()
     }
     SustainScore(scoreData)
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ScoreBreakDownPreview() {
+    ScoreBreakDown(
+        score = "140",
+        scoreFactor = "(+87)",
+        category = "Thing #5",
+        brush = SustainScorePink
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DonutChartPreview() {
+    val data = listOf(300f, 500f, 100f)
+    val colors = listOf(
+        SustainScoreBlue,
+        SustainScoreOrange,
+        SustainScorePink
+    )
+
+    DonutChart(
+        data = data,
+        colors = colors,
+        totalValue = data.sum().toInt().toString()
+    )
 }

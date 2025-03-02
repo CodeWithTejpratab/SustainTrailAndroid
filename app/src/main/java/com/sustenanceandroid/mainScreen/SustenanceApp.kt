@@ -1,5 +1,6 @@
 package com.sustenanceandroid.mainScreen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,9 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -32,6 +35,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.sustenanceandroid.R
+import com.sustenanceandroid.composables.home.HomeScreen
 import com.sustenanceandroid.composables.onboarding.login.Nav
 import com.sustenanceandroid.composables.onboarding.login.onboardLogin
 import com.sustenanceandroid.injection.AppModule.firebaseAuthManager
@@ -105,7 +109,17 @@ private fun MainApp(
             )
         },
     ) { innerPadding ->
-        NavigationHost(navController, Modifier.padding(innerPadding))
+        Box {
+            Image(
+                painter = painterResource(R.drawable.background),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.TopStart)
+            )
+
+            NavigationHost(navController, Modifier.padding(innerPadding))
+        }
     }
 }
 
@@ -170,7 +184,7 @@ private fun NavigationHost(
         startDestination = stringResource(R.string.home),
         modifier = modifier
     ) {
-        composable(resources.getString(R.string.home)) { }
+        composable(resources.getString(R.string.home)) { HomeScreen() }
         composable(resources.getString(R.string.environmental_news)) { }
         composable(resources.getString(R.string.location)) { }
         composable(resources.getString(R.string.profile)) { }

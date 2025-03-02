@@ -3,6 +3,8 @@
 
     <!-- String -->
     <string name="sustain_score_chart_error">Oops! There was an error displaying chart :/</string>
+    <string name="sustain_score">"Sustain Score"</string>
+    <string name="greeting">Hello, %1$s!</string>
 
     <!-- Bottom Navigation Tab -->
     <string name="home">Home</string>
@@ -28,5 +30,9 @@
     <string name="register_page_location">Location (optional)</string>
     <string name="register_page_password">Re-enter Password</string>
     <string name="register_page_terms">I accept the terms &amp; conditions</string>
+
+    <!-- Content Description -->
+    <string name="profile_picture">Profile Picture</string>
+    <string name="notifications">Notifications</string>
 
 </resources>

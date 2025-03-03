@@ -33,10 +33,13 @@ import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.TextStyles
 import com.sustenanceandroid.model.ScoreData
 import com.sustenanceandroid.model.ScoreInfo
-import com.sustenanceandroid.ui.theme.SustainScoreBlue
+import com.sustenanceandroid.ui.theme.SustainScoreBlueBrush
 import com.sustenanceandroid.ui.theme.SustainScoreGreen
-import com.sustenanceandroid.ui.theme.SustainScoreOrange
-import com.sustenanceandroid.ui.theme.SustainScorePink
+import com.sustenanceandroid.ui.theme.SustainScoreOrangeBrush
+import com.sustenanceandroid.ui.theme.SustainScorePinkBrush
+import com.sustenanceandroid.ui.theme.SustainScorePurpleBrush
+import com.sustenanceandroid.ui.theme.SustainScoreRed
+import com.sustenanceandroid.ui.theme.SustainScoreYellowBrush
 import com.sustenanceandroid.ui.theme.TransparentBrush
 
 @Composable
@@ -45,9 +48,11 @@ fun SustainScore(
     modifier: Modifier = Modifier,
 ) {
     val colors = listOf(
-        SustainScoreBlue,
-        SustainScoreOrange,
-        SustainScorePink
+        SustainScoreBlueBrush,
+        SustainScoreOrangeBrush,
+        SustainScorePinkBrush,
+        SustainScorePurpleBrush,
+        SustainScoreYellowBrush
     )
 
     Box {
@@ -100,9 +105,7 @@ private fun ScoreBreakDown(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.padding(
-            dimensionResource(R.dimen.sustain_score_break_down_padding)
-        )
+        modifier = Modifier.padding(dimensionResource(R.dimen.sustain_score_break_down_padding))
     ) {
         Box(
             modifier = Modifier
@@ -129,7 +132,7 @@ private fun ScoreBreakDown(
                     text = scoreFactor,
                     style = TextStyles.normalText1().copy(
                         fontSize = 10.sp,
-                        color = SustainScoreGreen
+                        color = if (scoreFactor.contains('+')) SustainScoreGreen else SustainScoreRed
                     ),
                 )
             }
@@ -233,6 +236,11 @@ private fun SustainScorePreview() {
                 score = "140"
                 scoreFactor = "(+87)"
                 category = "Thing #5"
+            },
+            ScoreInfo().apply {
+                score = "120"
+                scoreFactor = "(-20)"
+                category = "Thing #5"
             }
         )
     }
@@ -254,9 +262,9 @@ private fun SustainScoreErrorPreview() {
 private fun ScoreBreakDownPreview() {
     ScoreBreakDown(
         score = "140",
-        scoreFactor = "(+87)",
+        scoreFactor = "(-87)",
         category = "Thing #5",
-        brush = SustainScorePink
+        brush = SustainScorePinkBrush
     )
 }
 
@@ -265,9 +273,9 @@ private fun ScoreBreakDownPreview() {
 private fun DonutChartPreview() {
     val data = listOf(300f, 500f, 100f)
     val colors = listOf(
-        SustainScoreBlue,
-        SustainScoreOrange,
-        SustainScorePink
+        SustainScoreBlueBrush,
+        SustainScoreOrangeBrush,
+        SustainScorePinkBrush
     )
 
     DonutChart(

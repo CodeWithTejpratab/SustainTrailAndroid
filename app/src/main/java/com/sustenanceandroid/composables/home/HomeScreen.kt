@@ -17,10 +17,16 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,9 +39,24 @@ import com.sustenanceandroid.composables.TextStyles
 import com.sustenanceandroid.model.Exposition
 import com.sustenanceandroid.model.ScoreData
 import com.sustenanceandroid.model.ScoreInfo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
+    var isRefreshing by remember { mutableStateOf(false) }
+
+    fun refreshData() {
+        isRefreshing = true
+        CoroutineScope(Dispatchers.IO).launch {
+            delay(1000)
+            isRefreshing = false
+        }
+    }
+
     /*
     *
     * Temporary data until api model gets build out,
@@ -67,17 +88,22 @@ fun HomeScreen() {
     val expositions: List<Exposition> = listOf(scoreData)
 
     Box {
-        Column {
-            HomeTopPanel("Lime")
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = { refreshData() },
+        ) {
+            Column {
+                HomeTopPanel("Lime")
 
-            LazyColumn(
-                contentPadding = PaddingValues(20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(expositions) { exposition ->
-                    when (exposition) {
-                        is ScoreData -> SustainScore(exposition)
+                LazyColumn(
+                    contentPadding = PaddingValues(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(expositions) { exposition ->
+                        when (exposition) {
+                            is ScoreData -> SustainScore(exposition)
+                        }
                     }
                 }
             }

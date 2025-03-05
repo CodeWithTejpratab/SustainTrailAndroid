@@ -34,5 +34,6 @@
     <!-- Content Description -->
     <string name="profile_picture">Profile Picture</string>
     <string name="notifications">Notifications</string>
-
+    <string name="welcome_to_sustain_trail">Welcome to Sustain Trail</string>
+    
 </resources>

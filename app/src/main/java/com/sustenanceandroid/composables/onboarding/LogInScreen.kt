@@ -72,7 +72,7 @@ fun LogInScreen(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
                     painter = painterResource(R.drawable.welcomemessage),
-                    contentDescription = null,
+                    contentDescription = stringResource(R.string.welcome_to_sustain_trail),
                     modifier = Modifier.fillMaxWidth()
                 )
 

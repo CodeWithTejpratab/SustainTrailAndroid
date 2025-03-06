@@ -10,7 +10,6 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.lifecycle.ViewModel
 import com.sustenanceandroid.R
 import com.sustenanceandroid.injection.AppModule.firebaseAuthManager
 import com.sustenanceandroid.injection.AppModule.resources
@@ -18,7 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class MainViewModel : ViewModel() {
+class MainViewModel : BaseViewModel() {
 
     data class BottomNavItem(
         val title: String,

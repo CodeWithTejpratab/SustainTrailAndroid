@@ -23,10 +23,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,75 +32,41 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.TextStyles
-import com.sustenanceandroid.model.Exposition
+import com.sustenanceandroid.model.LatestNews
 import com.sustenanceandroid.model.ScoreData
-import com.sustenanceandroid.model.ScoreInfo
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.sustenanceandroid.model.api.ExpositionRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
-    var isRefreshing by remember { mutableStateOf(false) }
+    val viewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(ExpositionRepository()))
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    fun refreshData() {
-        isRefreshing = true
-        CoroutineScope(Dispatchers.IO).launch {
-            delay(1000)
-            isRefreshing = false
-        }
+    LaunchedEffect(Unit) {
+        viewModel.fetchExpositions()
     }
-
-    /*
-    *
-    * Temporary data until api model gets build out,
-    * also so that we have something to show visually
-    * since the api endpoint is not ready yet.
-    * We will remove this once everything is ready.
-    *
-    */
-    val scoreData = ScoreData().apply {
-        data = listOf(300f, 500f, 100f)
-        scoreInfo = listOf(
-            ScoreInfo().apply {
-                score = "300"
-                scoreFactor = "(+19)"
-                category = "Thing #1"
-            },
-            ScoreInfo().apply {
-                score = "500"
-                scoreFactor = "(+22)"
-                category = "Thing #2"
-            },
-            ScoreInfo().apply {
-                score = "100"
-                scoreFactor = "(+67)"
-                category = "Thing #3"
-            }
-        )
-    }
-    val expositions: List<Exposition> = listOf(scoreData)
 
     Box {
         PullToRefreshBox(
-            isRefreshing = isRefreshing,
-            onRefresh = { refreshData() },
+            isRefreshing = uiState.isRefreshing,
+            onRefresh = viewModel::fetchExpositions,
         ) {
             Column {
-                HomeTopPanel("Lime")
+                HomeTopPanel()
 
                 LazyColumn(
                     contentPadding = PaddingValues(20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    items(expositions) { exposition ->
+                    items(uiState.expositions) { exposition ->
                         when (exposition) {
                             is ScoreData -> SustainScore(exposition)
+                            is LatestNews -> { }
                         }
                     }
                 }
@@ -112,7 +76,7 @@ fun HomeScreen() {
 }
 
 @Composable
-private fun HomeTopPanel(username: String) {
+private fun HomeTopPanel() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -134,7 +98,7 @@ private fun HomeTopPanel(username: String) {
         )
 
         Text(
-            text = stringResource(R.string.greeting, username),
+            text = stringResource(R.string.greeting, "user"),
             style = TextStyles.panelText()
         )
 

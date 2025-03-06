@@ -15,3 +15,15 @@ class ScoreData : Exposition() {
     val totalValue: String
         get() = (data?.sum()?.toInt() ?: 0).toString()
 }
+
+class LatestNews : Exposition() {
+    var articles: List<Article>? = null
+}
+
+class Article {
+    var url: String? = null
+    var title: String? = null
+    var category: String? = null
+    var imageURL: String? = null
+    var publish: String? = null
+}

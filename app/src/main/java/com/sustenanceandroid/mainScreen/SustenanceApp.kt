@@ -162,7 +162,7 @@ private fun BottomNavBar(
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_START && firebaseAuthManager.isUserLoggedIn) {
+            if (event == Lifecycle.Event.ON_CREATE && firebaseAuthManager.isUserLoggedIn) {
                 onNavigationItemSelected(0)
             }
         }

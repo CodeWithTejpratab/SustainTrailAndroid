@@ -1,5 +1,6 @@
 package com.sustenanceandroid.model.api
 
+import android.util.Log
 import com.google.gson.GsonBuilder
 import com.sustenanceandroid.model.Exposition
 import kotlinx.coroutines.Dispatchers
@@ -9,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ExpositionRepository {
     companion object {
-        private const val BASE_URL = "https://api.com/"
+        private const val BASE_URL = "http://10.0.2.2:8000"
     }
 
     private val gson = GsonBuilder()
@@ -29,6 +30,7 @@ class ExpositionRepository {
                 val response = apiService.getExpositions()
                 if (response.isSuccessful) response.body() else null
             } catch (e: Exception) {
+                e.localizedMessage?.let { Log.d("ERROR", it) }
                 null
             }
         }

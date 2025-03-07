@@ -33,9 +33,21 @@ object TextStyles {
     )
 
     @Composable
+    fun headLine1() = textDefault().copy(
+        fontFamily = Poppins,
+        fontSize = 20.sp,
+    )
+
+    @Composable
     fun normalText1() = textDefault().copy(
         fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp
+    )
+
+    @Composable
+    fun normalTextSmall() = textDefault().copy(
+        fontFamily = Poppins,
+        fontSize = 12.sp
     )
 
     @Composable

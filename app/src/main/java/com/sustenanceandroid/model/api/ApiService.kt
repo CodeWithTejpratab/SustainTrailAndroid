@@ -5,6 +5,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("home")
+    @GET("api/home/123")
     suspend fun getExpositions(): Response<List<Exposition>>
 }

@@ -36,7 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.TextStyles
-import com.sustenanceandroid.model.LatestNews
+import com.sustenanceandroid.model.NewsSection
 import com.sustenanceandroid.model.ScoreData
 import com.sustenanceandroid.model.api.ExpositionRepository
 
@@ -66,7 +66,7 @@ fun HomeScreen() {
                     items(uiState.expositions) { exposition ->
                         when (exposition) {
                             is ScoreData -> SustainScore(exposition)
-                            is LatestNews -> { }
+                            is NewsSection -> NewsSectionView(exposition)
                         }
                     }
                 }

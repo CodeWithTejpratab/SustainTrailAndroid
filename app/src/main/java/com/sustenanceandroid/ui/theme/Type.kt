@@ -39,3 +39,8 @@ val Poppins = FontFamily(
     Font(R.font.poppins_bold),
     Font(R.font.poppins)
 )
+
+val Manrope = FontFamily(
+    Font(R.font.manrope_bold),
+    Font(R.font.manrope)
+)

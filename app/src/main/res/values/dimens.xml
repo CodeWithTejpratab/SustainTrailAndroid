@@ -14,4 +14,14 @@
     <dimen name="sustain_score_break_down_padding">12dp</dimen>
     <dimen name="sustain_score_spacing">20dp</dimen>
 
+    <!-- Page Headings -->
+    <dimen name="page_heading_horizontal_spacing">15dp</dimen>
+    <dimen name="page_heading_vertical_spacing">50dp</dimen>
+
+    <!-- Profile -->
+    <dimen name="profile_box_padding">25dp</dimen>
+    <dimen name="profile_picture_size">140dp</dimen>
+    <dimen name="profile_content_spacing">50dp</dimen>
+    <dimen name="profile_content_button_spacing">20dp</dimen>
+
 </resources>

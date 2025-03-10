@@ -10,6 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.sp
 import com.sustenanceandroid.R
+import com.sustenanceandroid.ui.theme.Manrope
 import com.sustenanceandroid.ui.theme.Poppins
 
 object TextStyles {
@@ -62,5 +63,19 @@ object TextStyles {
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
         color = Color.Black
+    )
+
+    @Composable
+    fun pageHeading() = textDefault().copy(
+        fontSize = 24.sp,
+        fontFamily = Poppins,
+        fontWeight = FontWeight.Bold
+    )
+
+    @Composable
+    fun profileText() = textDefault().copy(
+        fontSize = 20.sp,
+        fontFamily = Manrope,
+        fontWeight = FontWeight.Bold
     )
 }

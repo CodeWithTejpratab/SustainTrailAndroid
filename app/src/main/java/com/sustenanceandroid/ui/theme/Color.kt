@@ -29,3 +29,6 @@ val SustainScoreOrangeBrush = Brush.linearGradient(listOf(Color(0xFFFFB76B), Col
 val SustainScorePinkBrush = Brush.linearGradient(listOf(Color(0xFFF88F9C), Color(0xFFE36D88)))
 val SustainScorePurpleBrush = Brush.linearGradient(listOf(Color(0xFF9C27B0), Color(0xFF673AB7)))
 val SustainScoreYellowBrush = Brush.linearGradient(listOf(Color(0xFFFFEB3B), Color(0xFFFFC107)))
+
+// Profile
+val ProfileUsernameDarkBlue = Color(0xFF0B437E)

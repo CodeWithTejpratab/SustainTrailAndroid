@@ -5,6 +5,11 @@
     <string name="sustain_score_chart_error">Oops! There was an error displaying chart :/</string>
     <string name="sustain_score">"Sustain Score"</string>
     <string name="greeting">Hello, %1$s!</string>
+    <string name="profile_page_heading">Profile</string>
+    <string name="profile_button_edit">Edit Profile</string>
+    <string name="profile_button_about">About the App</string>
+    <string name="profile_button_terms">Terms &amp; Conditions</string>
+    <string name="profile_button_logout">Logout</string>
     <string name="view_all">View All</string>
 
     <!-- Bottom Navigation Tab -->

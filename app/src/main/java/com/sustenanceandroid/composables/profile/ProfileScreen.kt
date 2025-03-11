@@ -38,7 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.TextStyles
-import com.sustenanceandroid.injection.AppModule.firebaseAuthManager
+import com.sustenanceandroid.module.AppModule.firebaseAuthManager
 import com.sustenanceandroid.ui.theme.ProfileUsernameDarkBlue
 
 @Composable

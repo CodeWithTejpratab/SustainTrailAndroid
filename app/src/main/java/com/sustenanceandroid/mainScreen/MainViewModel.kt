@@ -11,8 +11,8 @@ import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.sustenanceandroid.R
-import com.sustenanceandroid.injection.AppModule.firebaseAuthManager
-import com.sustenanceandroid.injection.AppModule.resources
+import com.sustenanceandroid.module.AppModule.firebaseAuthManager
+import com.sustenanceandroid.module.AppModule.resources
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

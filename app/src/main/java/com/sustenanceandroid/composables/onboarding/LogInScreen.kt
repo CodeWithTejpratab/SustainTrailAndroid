@@ -60,6 +60,7 @@ fun LogInScreen(
         Image(
             painter = painterResource(R.drawable.background),
             contentDescription = null,
+            contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
 

@@ -81,7 +81,7 @@ private fun HomeTopPanel() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = 30.dp,
+                top = 10.dp,
                 start = 16.dp,
                 end = 16.dp
             ),

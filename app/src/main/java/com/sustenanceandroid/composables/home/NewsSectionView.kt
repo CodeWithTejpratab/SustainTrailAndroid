@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sustenanceandroid.R
@@ -29,17 +31,23 @@ import com.sustenanceandroid.composables.TextStyles
 import com.sustenanceandroid.composables.URLImage
 import com.sustenanceandroid.model.Article
 import com.sustenanceandroid.model.NewsSection
+import com.sustenanceandroid.module.Formatter.formatTimestamp
 
 @Composable
 fun NewsSectionView(news: NewsSection) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(16.dp)) {
         HorizontalDivider(color = Color.Black, modifier = Modifier.padding(bottom = 12.dp))
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text(
                 text = news.header ?: "",
                 style = TextStyles.headLine1()
             )
+
             Text(
                 text = stringResource(R.string.view_all),
                 color = Color(0xFFE67E22),
@@ -74,6 +82,7 @@ private fun NewsCard(
         ),
         modifier = modifier
             .width(300.dp)
+            .height(290.dp)
             .padding(6.dp)
             .clickable { println(article.url) }
     ) {
@@ -86,23 +95,26 @@ private fun NewsCard(
             )
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(12.dp)
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(12.dp)
             ) {
                 Text(
                     text = article.title.orEmpty(),
-                    style = TextStyles.normalText1()
+                    style = TextStyles.normalText1(),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                Row {
                     Text(
                         text = article.category.orEmpty(),
                         style = TextStyles.normalTextSmall().copy(color = Color(0xFFE67E22))
                     )
+
                     Text(
-                        text = " • ${article.publish.orEmpty()}",
+                        text = " • ${formatTimestamp(article.publish.orEmpty())}",
                         style = TextStyles.normalTextSmall().copy(color = Color.Gray)
                     )
                 }
@@ -121,32 +133,32 @@ private fun PreviewNewsSection() {
                 title = "Climate change: Arctic warming linked to colder winters"
                 category = "Nature"
                 imageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjgXGxd7YfLOEreWSrN9lgOquoTZn6JY9UIw&s"
-                publish = "4 min ago"
+                publish = "2025-03-07T18:09:33+00:00"
                 url = "Hello.com"
             },
             Article().apply {
-                title = "When will the world wake up to climate change"
+                title = "Will the world wake up"
                 category = "Nature"
                 imageURL = "https://www.originsustainables.com/wp-content/uploads/2023/09/positive-climate-news-article-1-1024x538.jpg"
-                publish = "10 min ago"
+                publish = "2025-03-07T18:09:33+00:00"
             },
             Article().apply {
                 title = "Tokyo Paralympics focus on sustainability"
                 category = "Sports"
                 imageURL = "https://thumbs.dreamstime.com/b/environment-news-newspaper-clipping-pinned-to-green-paper-background-33343837.jpg"
-                publish = "10 min ago"
+                publish = "2025-03-07T18:09:33+00:00"
             },
             Article().apply {
                 title = "Tokyo Paralympics focus on sustainability"
-                category = "Sports"
+                category = ""
                 imageURL = "https://www.fairobserver.com/wp-content/uploads/2021/07/Climate-change-news.jpg"
-                publish = "10 min ago"
+                publish = "2025-03-07T18:09:33+00:00"
             },
             Article().apply {
                 title = "Tokyo Paralympics focus on sustainability"
                 category = "Sports"
                 imageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZsjGNQYmL4dJ9isyXDYnodg2a3aIvYKqy8g&s"
-                publish = "10 min ago"
+                publish = "2025-03-07T18:09:33+00:00"
             }
         )
     }
@@ -158,25 +170,25 @@ private fun PreviewNewsSection() {
                 title = "Climate change: Arctic warming linked to colder winters"
                 category = "Nature"
                 imageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjgXGxd7YfLOEreWSrN9lgOquoTZn6JY9UIw&s"
-                publish = "4 min ago"
+                publish = "2025-03-07T18:09:33+00:00"
             },
             Article().apply {
                 title = "Tokyo Paralympics focus on sustainability"
                 category = "Sports"
                 imageURL = "https://thumbs.dreamstime.com/b/environment-news-newspaper-clipping-pinned-to-green-paper-background-33343837.jpg"
-                publish = "10 min ago"
+                publish = "2025-03-07T18:09:33+00:00"
             },
             Article().apply {
                 title = "Tokyo Paralympics focus on sustainability"
                 category = "Sports"
                 imageURL = "https://www.fairobserver.com/wp-content/uploads/2021/07/Climate-change-news.jpg"
-                publish = "10 min ago"
+                publish = "2025-03-07T18:09:33+00:00"
             },
             Article().apply {
                 title = "Tokyo Paralympics focus on sustainability"
                 category = "Sports"
                 imageURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZsjGNQYmL4dJ9isyXDYnodg2a3aIvYKqy8g&s"
-                publish = "10 min ago"
+                publish = "2025-03-07T18:09:33+00:00"
             }
         )
     }

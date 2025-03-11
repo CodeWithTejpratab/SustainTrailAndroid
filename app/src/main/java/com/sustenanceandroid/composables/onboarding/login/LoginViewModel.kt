@@ -1,7 +1,7 @@
 package com.sustenanceandroid.composables.onboarding.login
 
-import com.sustenanceandroid.injection.AppModule.firebaseAuthManager
 import com.sustenanceandroid.mainScreen.BaseViewModel
+import com.sustenanceandroid.module.AppModule.firebaseAuthManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

@@ -1,4 +1,4 @@
-package com.sustenanceandroid.injection
+package com.sustenanceandroid.module
 
 import android.content.Context
 import android.content.SharedPreferences

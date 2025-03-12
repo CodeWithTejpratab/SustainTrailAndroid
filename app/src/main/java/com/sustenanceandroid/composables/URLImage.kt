@@ -1,6 +1,7 @@
 package com.sustenanceandroid.composables
 
 import android.widget.ImageView
+import android.widget.ImageView.ScaleType
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -17,15 +18,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 @Composable
 fun URLImage(
+    modifier: Modifier = Modifier,
     imageUrl: String,
-    modifier: Modifier = Modifier
+    imageScaleType: ScaleType = ScaleType.CENTER_CROP
 ) {
     val context = LocalContext.current
 
     AndroidView(
         factory = { ctx ->
             ImageView(ctx).apply {
-                scaleType = ImageView.ScaleType.CENTER_CROP
+                scaleType = imageScaleType
             }
         },
         update = { imageView ->

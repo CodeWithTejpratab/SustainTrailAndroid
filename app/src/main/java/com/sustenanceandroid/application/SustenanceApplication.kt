@@ -1,7 +1,7 @@
 package com.sustenanceandroid.application
 
 import android.app.Application
-import com.sustenanceandroid.injection.AppModule
+import com.sustenanceandroid.module.AppModule
 
 class SustenanceApplication : Application() {
 

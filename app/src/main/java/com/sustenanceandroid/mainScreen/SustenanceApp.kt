@@ -4,8 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -15,10 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -34,13 +36,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.home.HomeScreen
 import com.sustenanceandroid.composables.onboarding.login.Nav
 import com.sustenanceandroid.composables.onboarding.login.onboardLogin
 import com.sustenanceandroid.composables.profile.ProfileScreen
-import com.sustenanceandroid.injection.AppModule.firebaseAuthManager
-import com.sustenanceandroid.injection.AppModule.resources
+import com.sustenanceandroid.module.AppModule.firebaseAuthManager
+import com.sustenanceandroid.module.AppModule.resources
 import com.sustenanceandroid.ui.theme.NavBarGreen
 import com.sustenanceandroid.ui.theme.SelectedIconColor
 import com.sustenanceandroid.ui.theme.SustenanceAndroidTheme
@@ -54,6 +57,13 @@ fun SustenanceApp(
 ) {
     val selectedIndex by viewModel.selectedIndex.collectAsStateWithLifecycle()
     val loggedInStatus by viewModel.loggedInStatus.collectAsStateWithLifecycle()
+    val systemUiController = rememberSystemUiController()
+
+    if (loggedInStatus) {
+        systemUiController.setNavigationBarColor(Color.Transparent)
+    } else {
+        systemUiController.setNavigationBarColor(Color.White)
+    }
 
     LaunchedEffect(Unit) {
         firebaseAuthManager.currentUser
@@ -64,11 +74,7 @@ fun SustenanceApp(
     }
 
     SustenanceAndroidTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .systemBarsPadding()
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
             NavHost(
                 navController = navController,
                 startDestination = if (!loggedInStatus) Nav.LoginFlow.route else Nav.MainApp.route
@@ -114,9 +120,8 @@ private fun MainApp(
             Image(
                 painter = painterResource(R.drawable.background),
                 contentDescription = null,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.TopStart)
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
             )
 
             NavigationHost(navController, Modifier.padding(innerPadding))
@@ -132,7 +137,12 @@ private fun BottomNavBar(
     selectedIndex: Int,
     onNavigationItemSelected: (Int) -> Unit
 ) {
-    NavigationBar(containerColor = NavBarGreen) {
+    NavigationBar(
+        containerColor = NavBarGreen,
+        modifier = Modifier
+            .wrapContentHeight()
+            .height(110.dp)
+    ) {
         items.forEachIndexed { index, item ->
 
             val isSelected = selectedIndex == index
@@ -146,17 +156,22 @@ private fun BottomNavBar(
                 icon = {
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(18.dp))
+                            .clip(RoundedCornerShape(20.dp))
                             .background(if (isSelected) Color.White else Color.Transparent)
                             .padding(6.dp)
                     ) {
                         Icon(
                             imageVector = if (isSelected) item.selectedItem else item.unSelectedItem,
                             contentDescription = item.title,
-                            tint = if (isSelected) SelectedIconColor else UnselectedIconColor
+                            tint = if (isSelected) SelectedIconColor else UnselectedIconColor,
+                            modifier = Modifier.size(26.dp)
                         )
                     }
-                }
+                },
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20.dp))
+                    .size(50.dp)
+                    .padding(6.dp)
             )
         }
     }

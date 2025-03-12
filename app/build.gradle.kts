@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.navigation.compose.v287)
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))

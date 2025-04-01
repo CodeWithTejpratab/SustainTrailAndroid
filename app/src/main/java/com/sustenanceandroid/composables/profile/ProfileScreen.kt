@@ -31,18 +31,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.TextStyles
 import com.sustenanceandroid.module.AppModule.firebaseAuthManager
+import com.sustenanceandroid.module.AppModule.resources
+import com.sustenanceandroid.module.Utils.launchCustomChromeTab
 import com.sustenanceandroid.ui.theme.ProfileUsernameDarkBlue
 
 @Composable
 fun ProfileScreen() {
+    val context = LocalContext.current
+
     ProfileHeading()
 
     Column(
@@ -61,8 +67,12 @@ fun ProfileScreen() {
                 profilePicture = Icons.Rounded.AccountCircle
             )
             ProfileMenuButtons(
-                onClickAbout = { },
-                onClickTerms = { },
+                onClickAbout = {
+                    launchCustomChromeTab(context, resources.getString(R.string.about_url).toUri())
+                },
+                onClickTerms = {
+                    launchCustomChromeTab(context, resources.getString(R.string.term_url).toUri())
+                },
                 onClickEdit = { },
                 onClickLogout = { firebaseAuthManager.signOut() }
             )

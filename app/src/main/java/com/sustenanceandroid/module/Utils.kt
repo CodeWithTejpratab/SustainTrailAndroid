@@ -1,10 +1,17 @@
 package com.sustenanceandroid.module
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
+import androidx.annotation.ColorInt
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import java.time.Duration
 import java.time.ZonedDateTime
 
-object Formatter {
+object Utils {
 
     private const val TAG = "APP ERROR"
 
@@ -25,5 +32,15 @@ object Formatter {
             e.localizedMessage?.let { message -> Log.d(TAG, message) }
             ""
         }
+    }
+
+    fun launchCustomChromeTab(context: Context, uri: Uri, @ColorInt toolbarColor: Int = Color.White.toArgb()) {
+        val customTabBarColor = CustomTabColorSchemeParams.Builder()
+            .setToolbarColor(toolbarColor).build()
+        val customTabsIntent = CustomTabsIntent.Builder()
+            .setDefaultColorSchemeParams(customTabBarColor)
+            .build()
+
+        customTabsIntent.launchUrl(context, uri)
     }
 }

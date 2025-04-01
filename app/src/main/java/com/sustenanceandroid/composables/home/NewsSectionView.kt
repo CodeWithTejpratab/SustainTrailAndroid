@@ -21,17 +21,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.TextStyles
 import com.sustenanceandroid.composables.URLImage
 import com.sustenanceandroid.model.Article
 import com.sustenanceandroid.model.NewsSection
-import com.sustenanceandroid.module.Formatter.formatTimestamp
+import com.sustenanceandroid.module.Utils.formatTimestamp
+import com.sustenanceandroid.module.Utils.launchCustomChromeTab
 
 @Composable
 fun NewsSectionView(news: NewsSection) {
@@ -71,6 +74,8 @@ private fun NewsCard(
     article: Article,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     Card(
         shape = AbsoluteRoundedCornerShape(4.dp),
         elevation = cardElevation(6.dp),
@@ -84,7 +89,11 @@ private fun NewsCard(
             .width(300.dp)
             .height(290.dp)
             .padding(6.dp)
-            .clickable { println(article.url) }
+            .clickable {
+                article.url?.let {
+                    launchCustomChromeTab(context, it.toUri())
+                }
+            }
     ) {
         Column {
             URLImage(

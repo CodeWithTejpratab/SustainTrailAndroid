@@ -41,5 +41,9 @@
     <string name="profile_picture">Profile Picture</string>
     <string name="notifications">Notifications</string>
     <string name="welcome_to_sustain_trail">Welcome to Sustain Trail</string>
+
+    <!-- URL -->
+    <string name="about_url">https://landingpages-028db6.gitlab.io/about.html</string>
+    <string name="term_url">https://landingpages-028db6.gitlab.io/terms.html</string>
     
 </resources>

@@ -45,5 +45,13 @@
     <!-- URL -->
     <string name="about_url">https://landingpages-028db6.gitlab.io/about.html</string>
     <string name="term_url">https://landingpages-028db6.gitlab.io/terms.html</string>
-    
+
+    <!-- Misc Screen -->
+    <string name="misc_screen_header">Environmental News</string>
+
+    <!-- Events -->
+    <string name="see_event_details">See Event Details</string>
+    <string name="see_event_detail_arrow">→</string>
+    <string name="spots_left">spots left!</string>
+
 </resources>

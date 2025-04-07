@@ -22,11 +22,11 @@ object Utils {
             val duration = Duration.between(formatedTimestamp, timestampNow)
             when {
                 duration.seconds < 60 -> "just now"
-                duration.toMinutes() < 60 -> "${duration.toMinutes()} minutes ago"
-                duration.toHours() < 24 -> "${duration.toHours()} hours ago"
-                duration.toDays() < 30 -> "${duration.toDays()} days ago"
-                duration.toDays() < 365 -> "${duration.toDays() / 30} months ago"
-                else -> "${duration.toDays() / 365} years ago"
+                duration.toMinutes() < 60 -> "${duration.toMinutes()} minute(s) ago"
+                duration.toHours() < 24 -> "${duration.toHours()} hour(s) ago"
+                duration.toDays() < 30 -> "${duration.toDays()} day(s) ago"
+                duration.toDays() < 365 -> "${duration.toDays() / 30} month(s) ago"
+                else -> "${duration.toDays() / 365} year(s) ago"
             }
         } catch (e: Exception) {
             e.localizedMessage?.let { message -> Log.d(TAG, message) }

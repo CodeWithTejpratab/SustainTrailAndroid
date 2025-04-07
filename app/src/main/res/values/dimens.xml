@@ -24,4 +24,13 @@
     <dimen name="profile_content_spacing">50dp</dimen>
     <dimen name="profile_content_button_spacing">20dp</dimen>
 
+    <!-- Events -->
+    <dimen name="event_card_spacing">20dp</dimen>
+    <dimen name="event_card_corner_radius">8dp</dimen>
+    <dimen name="event_card_box_shadow">10dp</dimen>
+    <dimen name="event_card_image_height">140dp</dimen>
+    <dimen name="event_card_information_max_width">250dp</dimen>
+    <dimen name="event_card_gutter">4dp</dimen>
+    <dimen name="event_card_capacity_indicator_size">65dp</dimen>
+
 </resources>

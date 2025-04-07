@@ -10,6 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.sp
 import com.sustenanceandroid.R
+import com.sustenanceandroid.ui.theme.EventsMainTextDarkBlue
 import com.sustenanceandroid.ui.theme.Manrope
 import com.sustenanceandroid.ui.theme.Poppins
 
@@ -77,5 +78,40 @@ object TextStyles {
         fontSize = 20.sp,
         fontFamily = Manrope,
         fontWeight = FontWeight.Bold
+    )
+
+    @Composable
+    fun eventTitleText() = textDefault().copy(
+        fontSize = 20.sp,
+        fontFamily = Manrope,
+        fontWeight = FontWeight.Bold,
+        color = EventsMainTextDarkBlue
+    )
+
+    @Composable
+    fun eventDetailsLinkText() = textDefault().copy(
+        fontSize = 20.sp,
+        fontFamily = Manrope,
+        color = EventsMainTextDarkBlue
+    )
+
+    @Composable
+    fun eventDateText() = textDefault().copy(
+        fontSize = 18.sp,
+        fontFamily = Manrope,
+        fontWeight = FontWeight.Bold
+    )
+
+    @Composable
+    fun eventCapacityPercentText() = textDefault().copy(
+        fontSize = 16.sp,
+        fontFamily = Manrope,
+        fontWeight = FontWeight.Bold
+    )
+
+    @Composable
+    fun eventRemainingSpotsText() = textDefault().copy(
+        fontSize = 14.sp,
+        fontFamily = Manrope
     )
 }

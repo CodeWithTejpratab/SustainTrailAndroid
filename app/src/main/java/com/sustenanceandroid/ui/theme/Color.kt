@@ -32,3 +32,10 @@ val SustainScoreYellowBrush = Brush.linearGradient(listOf(Color(0xFFFFEB3B), Col
 
 // Profile
 val ProfileUsernameDarkBlue = Color(0xFF0B437E)
+
+// Events
+val EventsMainTextDarkBlue = Color(0xFF0B437E)
+val EventsDateTextGray = Color(0xB2000000)
+val EventsSpotsRemainingRed = Color(0xFFFB6060)
+val EventsSpotsRemainingGreen = Color(0xFF4CAF50)
+val EventsSpotsRemainingBlue = Color(0xFF497BA4)

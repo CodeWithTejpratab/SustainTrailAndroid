@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.sustenanceandroid.mainScreen.BaseViewModel
 import com.sustenanceandroid.model.Exposition
 import com.sustenanceandroid.model.api.ExpositionRepository
+import com.sustenanceandroid.model.api.Screen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +25,7 @@ class HomeViewModel(private val repository: ExpositionRepository) : BaseViewMode
     fun fetchExpositions() {
         _uiState.update { it.copy(isRefreshing = true) }
         launchCatchingBlock {
-            val data = repository.fetchExpositions()
+            val data = repository.fetchExpositions(Screen.HOME)
             data?.let { expositions -> _uiState.update { it.copy(expositions = expositions) } }
             delay(1000)
             _uiState.update { it.copy(isRefreshing = false) }

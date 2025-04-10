@@ -1,6 +1,7 @@
 package com.sustenanceandroid.composables.misc
 
-import android.widget.ImageView
+import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,10 +31,8 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.LinkAnnotation
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,7 +43,6 @@ import com.sustenanceandroid.composables.URLImage
 import com.sustenanceandroid.model.Event
 import com.sustenanceandroid.model.EventSection
 import com.sustenanceandroid.module.Utils.formatTimestamp
-import com.sustenanceandroid.module.Utils.launchCustomChromeTab
 import com.sustenanceandroid.ui.theme.EventsDateTextGray
 import com.sustenanceandroid.ui.theme.EventsMainTextDarkBlue
 import com.sustenanceandroid.ui.theme.EventsSpotsRemainingBlue
@@ -88,7 +86,6 @@ private fun EventCard(
         Column {
             URLImage(
                 imageUrl = imageUrl,
-                imageScaleType = ImageView.ScaleType.CENTER_CROP,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(dimensionResource(R.dimen.event_card_image_height))
@@ -124,26 +121,6 @@ private fun EventCardInformation(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.event_card_gutter)),
         modifier = Modifier.width(dimensionResource(R.dimen.event_card_information_max_width))
     ) {
-        Title(
-            title = title
-        )
-
-        HorizontalDivider(
-            thickness = 1.dp,
-        )
-
-        DateEventDetails(
-            date = date,
-            url = url
-        )
-    }
-}
-
-@Composable
-private fun Title(
-    title: String,
-) {
-    Column {
         Text(
             text = title,
             style = TextStyles.eventTitleText(),
@@ -151,6 +128,10 @@ private fun Title(
             maxLines = 1,
             modifier = Modifier.padding(horizontal = 10.dp)
         )
+
+        HorizontalDivider(thickness = 1.dp)
+
+        DateEventDetails(date = date, url = url)
     }
 }
 
@@ -179,46 +160,30 @@ private fun DateEventDetails(
             )
         }
 
-        Row {
-            SeeEventDetailsLink(url = url)
-        }
+        SeeEventDetailsLink(url = url)
     }
 }
 
 @Composable
-private fun SeeEventDetailsLink(
-    url: String
-) {
+private fun SeeEventDetailsLink(url: String) {
     val context = LocalContext.current
-    val annotatedLinkString = buildAnnotatedString {
-        val seeEventDetails = stringResource(R.string.see_event_details)
-        append(seeEventDetails)
-        append(" ${stringResource(R.string.see_event_detail_arrow)}")
-
-        addStyle(
-            style = SpanStyle(
-                color = EventsMainTextDarkBlue
-            ),
-            start = 0,
-            end = seeEventDetails.length
-        )
-
-        addLink(
-            LinkAnnotation.Clickable(
-                "ClickableLinkTag",
-                linkInteractionListener = {
-                    launchCustomChromeTab(context, url.toUri())
-                }
-            ),
-            start = 0,
-            end = seeEventDetails.length
-        )
-    }
-
-    Column {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.clickable {
+            val urlIntent = Intent(
+                Intent.ACTION_VIEW,
+                url.toUri()
+            )
+            context.startActivity(urlIntent)
+        }
+    ) {
         Text(
-            text = annotatedLinkString,
-            style = TextStyles.eventDetailsLinkText()
+            text = stringResource(R.string.see_event_details),
+            style = TextStyles.eventDetailsLinkText().copy(textDecoration = TextDecoration.Underline)
+        )
+        Text(
+            text = stringResource(R.string.see_event_detail_arrow),
+            style = TextStyles.eventDetailsLinkText(),
         )
     }
 }
@@ -230,11 +195,7 @@ private fun RemainingSpotsDisplay(
 ) {
     val spotsFilled = (totalSpots - remainingSpots).toFloat()
     val spotsFilledPct = spotsFilled / totalSpots
-
-    var urgentColor = EventsSpotsRemainingGreen
-    if (spotsFilledPct > 0.9) {
-        urgentColor = EventsSpotsRemainingRed
-    }
+    val urgentColor = if (spotsFilledPct < 0.9) EventsSpotsRemainingGreen else EventsSpotsRemainingRed
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -244,19 +205,15 @@ private fun RemainingSpotsDisplay(
         CapacityProgressCircle(decimalPercent = spotsFilledPct)
 
         Text(
-            "$remainingSpots ${stringResource(R.string.spots_left)}",
+            text = "$remainingSpots ${stringResource(R.string.spots_left)}",
             style = TextStyles.eventRemainingSpotsText().copy(color = urgentColor)
         )
     }
 }
 
 @Composable
-private fun CapacityProgressCircle(
-    decimalPercent: Float
-) {
-    Box(
-        contentAlignment = Alignment.Center
-    ) {
+private fun CapacityProgressCircle(decimalPercent: Float) {
+    Box(contentAlignment = Alignment.Center) {
         CircularProgressIndicator(
             progress = { decimalPercent },
             modifier = Modifier
@@ -270,7 +227,7 @@ private fun CapacityProgressCircle(
         )
 
         Text(
-            "${(decimalPercent * 100).toInt()}%",
+            text = "${(decimalPercent * 100).toInt()}%",
             style = TextStyles.eventCapacityPercentText().copy(color = EventsMainTextDarkBlue),
             fontWeight = FontWeight.Bold
         )
@@ -281,41 +238,39 @@ private fun CapacityProgressCircle(
 @Composable
 private fun EventSectionPreview() {
     val events = EventSection().apply {
-        Event().apply {
-            imageUrl = "https://scx1.b-cdn.net/csz/news/tmb/2025/sulfur-bacteria-team-u.jpg"
-            title = "Cocoa’s Beach Cleanup"
-            url = "google.com"
-            date = "2025-03-07T18:09:33+00:00"
-            totalSpots = 50
-            remainingSpots = 25
-        }
-        Event().apply {
-            imageUrl = "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"
-            title = "Nagawe’s Village Cleanup"
-            url = "facebook.com"
-            date = "2025-04-02T18:09:33+00:00"
-            totalSpots = 10
-            remainingSpots = 0
-        }
-        Event().apply {
-            imageUrl = "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"
-            title = "Nagawe’s Village Cleanup"
-            url = "facebook.com"
-            date = "2025-04-02T18:09:33+00:00"
-            totalSpots = 10
-            remainingSpots = 0
-        }
-        Event().apply {
-            imageUrl = "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"
-            title = "Nagawe’s Village Cleanup"
-            url = "facebook.com"
-            date = "2025-04-02T18:09:33+00:00"
-            totalSpots = 10
-            remainingSpots = 0
-        }
+        events = listOf(
+            Event().apply {
+                imageUrl = "https://scx1.b-cdn.net/csz/news/tmb/2025/sulfur-bacteria-team-u.jpg"
+                title = "Cocoa’s Beach Cleanup"
+                url = "google.com"
+                date = "2025-03-07T18:09:33+00:00"
+                totalSpots = 50
+                remainingSpots = 25
+            },
+            Event().apply {
+                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"
+                title = "Nagawe’s Village Cleanup"
+                url = "facebook.com"
+                date = "2025-04-02T18:09:33+00:00"
+                totalSpots = 10
+                remainingSpots = 0
+            },
+            Event().apply {
+                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"
+                title = "Nagawe’s Village Cleanup"
+                url = "facebook.com"
+                date = "2025-04-02T18:09:33+00:00"
+                totalSpots = 10
+                remainingSpots = 0
+            },
+            Event().apply {
+                imageUrl = "https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"
+                title = "Nagawe’s Village Cleanup"
+                url = "facebook.com"
+                date = "2025-04-02T18:09:33+00:00"
+            }
+        )
     }
 
-    Column {
-        EventSectionView(events)
-    }
+    EventSectionView(events)
 }

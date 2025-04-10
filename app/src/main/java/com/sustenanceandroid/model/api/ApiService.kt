@@ -6,5 +6,8 @@ import retrofit2.http.GET
 
 interface ApiService {
     @GET("api/home/123")
-    suspend fun getExpositions(): Response<List<Exposition>>
+    suspend fun getHomeExpositions(): Response<List<Exposition>>
+
+    @GET
+    suspend fun getEventExpositions(): Response<List<Exposition>>
 }

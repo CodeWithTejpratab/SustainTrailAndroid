@@ -5,8 +5,14 @@ import com.google.gson.GsonBuilder
 import com.sustenanceandroid.model.Exposition
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
+enum class Screen {
+    HOME,
+    EVENTS,
+}
 
 class ExpositionRepository {
     companion object {
@@ -24,15 +30,22 @@ class ExpositionRepository {
 
     private val apiService = retrofit.create(ApiService::class.java)
 
-    suspend fun fetchExpositions(): List<Exposition>? {
+    suspend fun fetchExpositions(screen: Screen): List<Exposition>? {
         return withContext(Dispatchers.IO) {
             try {
-                val response = apiService.getExpositions()
+                val response = getExpositionType(screen)
                 if (response.isSuccessful) response.body() else null
             } catch (e: Exception) {
                 e.localizedMessage?.let { Log.d("ERROR", it) }
                 null
             }
+        }
+    }
+
+    private suspend fun getExpositionType(screen: Screen): Response<List<Exposition>> {
+        return when (screen) {
+            Screen.HOME -> apiService.getHomeExpositions()
+            Screen.EVENTS -> apiService.getEventExpositions()
         }
     }
 }

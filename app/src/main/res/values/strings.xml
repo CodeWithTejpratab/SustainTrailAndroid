@@ -11,6 +11,7 @@
     <string name="profile_button_terms">Terms &amp; Conditions</string>
     <string name="profile_button_logout">Logout</string>
     <string name="view_all">View All</string>
+    <string name="profile_button_delete_account">Delete Account</string>
 
     <!-- Bottom Navigation Tab -->
     <string name="home">Home</string>

@@ -4,15 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sustenanceandroid.mainScreen.BaseViewModel
 import com.sustenanceandroid.model.Exposition
-import com.sustenanceandroid.model.api.ExpositionRepository
+import com.sustenanceandroid.model.api.APIRepository
 import com.sustenanceandroid.model.api.Screen
+import com.sustenanceandroid.module.AppModule.apiRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class HomeViewModel(private val repository: ExpositionRepository) : BaseViewModel() {
+class HomeViewModel(private val repository: APIRepository) : BaseViewModel() {
 
     data class UiState(
         val expositions: List<Exposition> = emptyList(),
@@ -33,7 +34,7 @@ class HomeViewModel(private val repository: ExpositionRepository) : BaseViewMode
     }
 }
 
-class HomeViewModelFactory(private val repository: ExpositionRepository) : ViewModelProvider.Factory {
+class HomeViewModelFactory(private val repository: APIRepository = apiRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

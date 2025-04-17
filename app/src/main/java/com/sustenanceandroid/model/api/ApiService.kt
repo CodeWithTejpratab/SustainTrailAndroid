@@ -7,12 +7,12 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ApiService {
-    @GET("api/home/123")
-    suspend fun getHomeExpositions(): Response<List<Exposition>>
+    @GET("api/home/{userId}")
+    suspend fun getHomeExpositions(@Path("userId") userId: String): Response<List<Exposition>>
 
-    @GET
-    suspend fun getEventExpositions(): Response<List<Exposition>>
+    @GET("api/events/{userId}")
+    suspend fun getEventExpositions(@Path("userId") userId: String): Response<List<Exposition>>
 
-    @DELETE("user/delete/{user_id}")
-    suspend fun deleteUser(@Path("user_id") userId: String): Response<Unit>
+    @DELETE("api/user/{userId}")
+    suspend fun deleteUser(@Path("userId") userId: String): Response<Unit>
 }

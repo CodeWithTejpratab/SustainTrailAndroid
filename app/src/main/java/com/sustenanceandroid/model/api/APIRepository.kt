@@ -14,7 +14,7 @@ enum class Screen {
     EVENTS,
 }
 
-class ExpositionRepository {
+class APIRepository {
     companion object {
         private const val BASE_URL = "http://10.0.2.2:8000"
     }
@@ -30,10 +30,22 @@ class ExpositionRepository {
 
     private val apiService = retrofit.create(ApiService::class.java)
 
+    suspend fun deleteUser(): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = apiService.deleteUser("123")
+                response.isSuccessful
+            } catch (e: Exception) {
+                e.localizedMessage?.let { Log.d("ERROR", it) }
+                false
+            }
+        }
+    }
+
     suspend fun fetchExpositions(screen: Screen): List<Exposition>? {
         return withContext(Dispatchers.IO) {
             try {
-                val response = getExpositionType(screen)
+                val response = getExpositionType(screen, "123")
                 if (response.isSuccessful) response.body() else null
             } catch (e: Exception) {
                 e.localizedMessage?.let { Log.d("ERROR", it) }
@@ -42,10 +54,10 @@ class ExpositionRepository {
         }
     }
 
-    private suspend fun getExpositionType(screen: Screen): Response<List<Exposition>> {
+    private suspend fun getExpositionType(screen: Screen, userId: String): Response<List<Exposition>> {
         return when (screen) {
-            Screen.HOME -> apiService.getHomeExpositions()
-            Screen.EVENTS -> apiService.getEventExpositions()
+            Screen.HOME -> apiService.getHomeExpositions(userId)
+            Screen.EVENTS -> apiService.getEventExpositions(userId)
         }
     }
 }

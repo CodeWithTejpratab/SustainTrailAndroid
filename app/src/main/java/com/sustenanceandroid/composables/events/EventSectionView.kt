@@ -1,11 +1,13 @@
-package com.sustenanceandroid.composables.misc
+package com.sustenanceandroid.composables.events
 
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,10 +21,14 @@ import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -37,6 +43,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.TextStyles
 import com.sustenanceandroid.composables.URLImage
@@ -49,8 +57,36 @@ import com.sustenanceandroid.ui.theme.EventsSpotsRemainingBlue
 import com.sustenanceandroid.ui.theme.EventsSpotsRemainingGreen
 import com.sustenanceandroid.ui.theme.EventsSpotsRemainingRed
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable fun EventScreen(viewModel: EventViewModel = viewModel(factory = EventViewModel.Factory)) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchExpositions()
+    }
+
+    Box {
+        PullToRefreshBox(
+            isRefreshing = uiState.isRefreshing,
+            onRefresh = viewModel::fetchExpositions,
+        ) {
+            LazyColumn(
+                contentPadding = PaddingValues(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(uiState.expositions) { exposition ->
+                    when (exposition) {
+                        is EventSection -> EventSectionView(exposition)
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Composable
-fun EventSectionView(events: EventSection) {
+private fun EventSectionView(events: EventSection) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.event_card_spacing)),
         modifier = Modifier.padding(dimensionResource(R.dimen.event_card_spacing))

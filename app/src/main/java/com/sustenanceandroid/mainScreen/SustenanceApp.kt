@@ -40,6 +40,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.events.EventScreen
 import com.sustenanceandroid.composables.home.HomeScreen
+import com.sustenanceandroid.composables.map.MapsScreen
 import com.sustenanceandroid.composables.onboarding.login.Nav
 import com.sustenanceandroid.composables.onboarding.login.onboardLogin
 import com.sustenanceandroid.composables.profile.ProfileScreen
@@ -203,7 +204,7 @@ private fun NavigationHost(
     ) {
         composable(resources.getString(R.string.home)) { HomeScreen() }
         composable(resources.getString(R.string.environmental_news)) { EventScreen() }
-        composable(resources.getString(R.string.location)) { }
+        composable(resources.getString(R.string.location)) { MapsScreen() }
         composable(resources.getString(R.string.profile)) { ProfileScreen() }
     }
 }

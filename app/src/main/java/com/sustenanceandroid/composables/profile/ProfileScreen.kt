@@ -27,8 +27,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,11 +48,8 @@ import com.sustenanceandroid.module.Utils.launchCustomChromeTab
 import com.sustenanceandroid.ui.theme.ProfileUsernameDarkBlue
 
 @Composable
-fun ProfileScreen(
-    viewModel: ProfileViewModel = viewModel()
-) {
+fun ProfileScreen(viewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory)) {
     val context = LocalContext.current
-    val deleteAccountStatus by viewModel.deleteAccountStatus.collectAsState()
 
     ProfileHeading()
 
@@ -158,19 +153,18 @@ fun ProfileMenuButtons(
         )
 
         ProfileButton(
-            buttonText = stringResource(R.string.profile_button_logout),
-            icon = Icons.AutoMirrored.Rounded.Logout,
-            textColor = Color.Red,
-//            hasDivider = false,
-            onClick = onClickLogout
-        )
-
-        ProfileButton(
             buttonText = stringResource(R.string.profile_button_delete_account),
             icon = Icons.Rounded.Delete,
             textColor = Color.Red,
-            hasDivider = false,
             onClick = onClickDeleteAcct
+        )
+
+        ProfileButton(
+            buttonText = stringResource(R.string.profile_button_logout),
+            icon = Icons.AutoMirrored.Rounded.Logout,
+            textColor = Color.Red,
+            hasDivider = false,
+            onClick = onClickLogout
         )
     }
 }

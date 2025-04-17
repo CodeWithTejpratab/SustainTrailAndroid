@@ -39,12 +39,11 @@ import com.sustenanceandroid.composables.TextStyles
 import com.sustenanceandroid.model.AdPlus
 import com.sustenanceandroid.model.NewsSection
 import com.sustenanceandroid.model.ScoreData
-import com.sustenanceandroid.model.api.ExpositionRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
-    val viewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(ExpositionRepository()))
+    val viewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory())
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {

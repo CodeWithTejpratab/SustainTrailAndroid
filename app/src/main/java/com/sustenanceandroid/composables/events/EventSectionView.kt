@@ -5,9 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -58,7 +56,8 @@ import com.sustenanceandroid.ui.theme.EventsSpotsRemainingGreen
 import com.sustenanceandroid.ui.theme.EventsSpotsRemainingRed
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable fun EventScreen(viewModel: EventViewModel = viewModel(factory = EventViewModel.Factory)) {
+@Composable
+fun EventScreen(viewModel: EventViewModel = viewModel(factory = EventViewModel.Factory)) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -70,16 +69,8 @@ import com.sustenanceandroid.ui.theme.EventsSpotsRemainingRed
             isRefreshing = uiState.isRefreshing,
             onRefresh = viewModel::fetchExpositions,
         ) {
-            LazyColumn(
-                contentPadding = PaddingValues(20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(uiState.expositions) { exposition ->
-                    when (exposition) {
-                        is EventSection -> EventSectionView(exposition)
-                    }
-                }
+            uiState.expositions.forEach { exposition ->
+                if (exposition is EventSection) EventSectionView(exposition)
             }
         }
     }
@@ -138,10 +129,12 @@ private fun EventCard(
                     url = url
                 )
 
-                RemainingSpotsDisplay(
-                    totalSpots = totalSpots,
-                    remainingSpots = remainingSpots
-                )
+                if (totalSpots > 0) {
+                    RemainingSpotsDisplay(
+                        totalSpots = totalSpots,
+                        remainingSpots = remainingSpots
+                    )
+                }
             }
         }
     }

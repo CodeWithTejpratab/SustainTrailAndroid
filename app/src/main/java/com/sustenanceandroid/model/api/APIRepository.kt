@@ -17,6 +17,8 @@ enum class Screen {
 class APIRepository {
     companion object {
         private const val BASE_URL = "http://10.0.2.2:8000"
+        private const val TAG = "APP ERROR"
+        private const val USER_ID = "123"
     }
 
     private val gson = GsonBuilder()
@@ -33,10 +35,22 @@ class APIRepository {
     suspend fun deleteUser(): Boolean {
         return withContext(Dispatchers.IO) {
             try {
-                val response = apiService.deleteUser("123")
+                val response = apiService.deleteUser(USER_ID)
                 response.isSuccessful
             } catch (e: Exception) {
-                e.localizedMessage?.let { Log.d("ERROR", it) }
+                e.localizedMessage?.let { Log.d(TAG, it) }
+                false
+            }
+        }
+    }
+
+    suspend fun sendActionEvent(eventCategory: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = apiService.postSustainScore(USER_ID, eventCategory)
+                response.isSuccessful
+            } catch (e: Exception) {
+                e.localizedMessage?.let { Log.d(TAG, it) }
                 false
             }
         }
@@ -45,10 +59,10 @@ class APIRepository {
     suspend fun fetchExpositions(screen: Screen): List<Exposition>? {
         return withContext(Dispatchers.IO) {
             try {
-                val response = getExpositionType(screen, "123")
+                val response = getExpositionType(screen, USER_ID)
                 if (response.isSuccessful) response.body() else null
             } catch (e: Exception) {
-                e.localizedMessage?.let { Log.d("ERROR", it) }
+                e.localizedMessage?.let { Log.d(TAG, it) }
                 null
             }
         }

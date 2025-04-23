@@ -43,7 +43,7 @@ import com.sustenanceandroid.composables.home.HomeScreen
 import com.sustenanceandroid.composables.map.MapsScreen
 import com.sustenanceandroid.composables.onboarding.login.Nav
 import com.sustenanceandroid.composables.onboarding.login.onboardLogin
-import com.sustenanceandroid.composables.profile.ProfileScreen
+import com.sustenanceandroid.composables.profile.ProfileNavGraph
 import com.sustenanceandroid.module.AppModule.firebaseAuthManager
 import com.sustenanceandroid.module.AppModule.resources
 import com.sustenanceandroid.ui.theme.NavBarGreen
@@ -205,6 +205,6 @@ private fun NavigationHost(
         composable(resources.getString(R.string.home)) { HomeScreen() }
         composable(resources.getString(R.string.environmental_news)) { EventScreen() }
         composable(resources.getString(R.string.location)) { MapsScreen() }
-        composable(resources.getString(R.string.profile)) { ProfileScreen() }
+        composable(resources.getString(R.string.profile)) { ProfileNavGraph() }
     }
 }

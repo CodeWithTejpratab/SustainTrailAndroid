@@ -7,11 +7,14 @@
     <string name="greeting">Hello, %1$s!</string>
     <string name="profile_page_heading">Profile</string>
     <string name="profile_button_edit">Edit Profile</string>
+    <string name="profile_button_delete_account">Delete Account</string>
+    <string name="save_button">Save</string>
     <string name="profile_button_about">About the App</string>
     <string name="profile_button_terms">Terms &amp; Conditions</string>
     <string name="profile_button_logout">Logout</string>
     <string name="view_all">View All</string>
-    <string name="profile_button_delete_account">Delete Account</string>
+    <string name="edit_username">Edit Username</string>
+    <string name="sponsored_content">Sponsored Content</string>
 
     <!-- Bottom Navigation Tab -->
     <string name="home">Home</string>
@@ -24,7 +27,7 @@
     <string name="starting_page_image_description">Onboarding starting</string>
     <string name="starting_page_message">"Walk one step closer to a greener Earth"</string>
     <string name="starting_page_button_text">"Get Started"</string>
-    <string name="login_username">Username</string>
+    <string name="username">Username</string>
     <string name="login_password">Password</string>
     <string name="password_content_description_show">Show password</string>
     <string name="password_content_description_hide">Hide password</string>
@@ -42,6 +45,7 @@
     <string name="profile_picture">Profile Picture</string>
     <string name="notifications">Notifications</string>
     <string name="welcome_to_sustain_trail">Welcome to Sustain Trail</string>
+    <string name="close_button_content_description">Close</string>
 
     <!-- URL -->
     <string name="about_url">https://landingpages-028db6.gitlab.io/about.html</string>

@@ -33,8 +33,12 @@ import com.sustenanceandroid.composables.TextStyles
 import com.sustenanceandroid.composables.URLImage
 import com.sustenanceandroid.model.Article
 import com.sustenanceandroid.model.NewsSection
+import com.sustenanceandroid.module.AppModule.apiRepository
 import com.sustenanceandroid.module.Utils.formatTimestamp
 import com.sustenanceandroid.module.Utils.launchCustomChromeTab
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun NewsSectionView(news: NewsSection) {
@@ -91,6 +95,9 @@ private fun NewsCard(
             .padding(6.dp)
             .clickable {
                 article.url?.let {
+                    CoroutineScope(Dispatchers.Default).launch {
+                        apiRepository.sendActionEvent(article.category ?: "News")
+                    }
                     launchCustomChromeTab(context, it.toUri())
                 }
             }

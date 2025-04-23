@@ -3,6 +3,7 @@ package com.sustenanceandroid.firebase
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -19,15 +20,18 @@ class FirebaseAuthManager {
                 FirebaseAuth.AuthStateListener { auth ->
                     this.trySend(auth.currentUser?.let { User(it.uid) })
                 }
-            Firebase.auth.addAuthStateListener(listener)
-            awaitClose { Firebase.auth.removeAuthStateListener(listener) }
+            auth.addAuthStateListener(listener)
+            awaitClose { auth.removeAuthStateListener(listener) }
         }
 
     val isUserLoggedIn: Boolean
         get() = auth.currentUser != null
 
     val currentUserId: String
-        get() = Firebase.auth.currentUser?.uid.orEmpty()
+        get() = auth.currentUser?.uid.orEmpty()
+
+    val currentUserDisplayName: String
+        get() = auth.currentUser?.displayName ?: "user"
 
     suspend fun createAccount(email: String, password: String, callback: (Boolean) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
@@ -41,6 +45,15 @@ class FirebaseAuthManager {
             .addOnCompleteListener { task ->
                 callback(task.isSuccessful)
             }.await()
+    }
+
+    suspend fun updateProfile(name: String = "user") {
+        if ((name == currentUserDisplayName || name == "user") && currentUserDisplayName.isNotEmpty()) return
+        auth.currentUser?.updateProfile(
+            userProfileChangeRequest {
+                displayName = name
+            }
+        )?.await()
     }
 
     fun signOut() = auth.signOut()

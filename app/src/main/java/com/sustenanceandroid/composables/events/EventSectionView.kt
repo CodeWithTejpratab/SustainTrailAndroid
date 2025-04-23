@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -48,29 +49,38 @@ import com.sustenanceandroid.composables.TextStyles
 import com.sustenanceandroid.composables.URLImage
 import com.sustenanceandroid.model.Event
 import com.sustenanceandroid.model.EventSection
-import com.sustenanceandroid.module.Utils.formatTimestamp
-import com.sustenanceandroid.ui.theme.EventsDateTextGray
+import com.sustenanceandroid.module.AppModule.apiRepository
+import com.sustenanceandroid.ui.theme.EventCardColor
 import com.sustenanceandroid.ui.theme.EventsMainTextDarkBlue
 import com.sustenanceandroid.ui.theme.EventsSpotsRemainingBlue
 import com.sustenanceandroid.ui.theme.EventsSpotsRemainingGreen
 import com.sustenanceandroid.ui.theme.EventsSpotsRemainingRed
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventScreen(viewModel: EventViewModel = viewModel(factory = EventViewModel.Factory)) {
+fun EventScreen() {
+    val viewModel: EventViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.fetchExpositions()
     }
 
-    Box {
+    Box(
+        contentAlignment = Alignment.TopCenter,
+        modifier = Modifier.fillMaxSize()
+    ) {
         PullToRefreshBox(
             isRefreshing = uiState.isRefreshing,
             onRefresh = viewModel::fetchExpositions,
         ) {
             uiState.expositions.forEach { exposition ->
-                if (exposition is EventSection) EventSectionView(exposition)
+                if (exposition is EventSection) {
+                    EventSectionView(exposition)
+                }
             }
         }
     }
@@ -88,7 +98,7 @@ private fun EventSectionView(events: EventSection) {
                     imageUrl = event.imageUrl.orEmpty(),
                     title = event.title.orEmpty(),
                     url = event.url.orEmpty(),
-                    date = event.date.orEmpty(),
+                    date = if (event.date.isNullOrEmpty()) "No date Available" else event.date!!,
                     totalSpots = event.totalSpots ?: 0,
                     remainingSpots = event.remainingSpots ?: 0
                 )
@@ -108,6 +118,7 @@ private fun EventCard(
 ) {
     Card(
         shape = RoundedCornerShape(dimensionResource(R.dimen.event_card_corner_radius)),
+        colors = EventCardColor,
         elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.event_card_box_shadow))
     ) {
         Column {
@@ -148,7 +159,9 @@ private fun EventCardInformation(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.event_card_gutter)),
-        modifier = Modifier.width(dimensionResource(R.dimen.event_card_information_max_width))
+        modifier = Modifier
+            .width(dimensionResource(R.dimen.event_card_information_max_width))
+            .padding(bottom = 6.dp)
     ) {
         Text(
             text = title,
@@ -165,10 +178,7 @@ private fun EventCardInformation(
 }
 
 @Composable
-private fun DateEventDetails(
-    date: String,
-    url: String
-) {
+private fun DateEventDetails(date: String, url: String) {
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.padding(horizontal = 20.dp)
@@ -184,8 +194,8 @@ private fun DateEventDetails(
             )
 
             Text(
-                text = formatTimestamp(date),
-                style = TextStyles.eventDateText().copy(color = EventsDateTextGray)
+                text = date,
+                style = TextStyles.eventDateText()
             )
         }
 
@@ -199,6 +209,9 @@ private fun SeeEventDetailsLink(url: String) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.clickable {
+            CoroutineScope(Dispatchers.Default).launch {
+                apiRepository.sendActionEvent("Events")
+            }
             val urlIntent = Intent(
                 Intent.ACTION_VIEW,
                 url.toUri()

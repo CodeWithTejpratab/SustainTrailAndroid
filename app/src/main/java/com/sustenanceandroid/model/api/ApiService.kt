@@ -4,6 +4,7 @@ import com.sustenanceandroid.model.Exposition
 import retrofit2.Response
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
@@ -15,4 +16,7 @@ interface ApiService {
 
     @DELETE("api/user/{userId}")
     suspend fun deleteUser(@Path("userId") userId: String): Response<Unit>
+
+    @PUT("api/sustainscore/{userId}/{eventCategory}")
+    suspend fun postSustainScore(@Path("userId") userId: String, @Path("eventCategory") eventCategory: String): Response<Unit>
 }

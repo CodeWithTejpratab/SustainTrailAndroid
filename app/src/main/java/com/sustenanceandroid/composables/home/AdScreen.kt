@@ -17,8 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.TextStyles
 import com.sustenanceandroid.composables.URLImage
 import com.sustenanceandroid.model.AdPlus
@@ -63,9 +65,8 @@ fun AdScreen(adPlus: AdPlus) {
                 .fillMaxWidth()
                 .padding(4.dp)
         ) {
-
             Text(
-                text = "Sponsored Content",
+                text = stringResource(R.string.sponsored_content),
                 style = TextStyles.normalTextSmall().copy(color = Color.LightGray)
             )
         }

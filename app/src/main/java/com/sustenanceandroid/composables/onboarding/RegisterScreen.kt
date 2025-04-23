@@ -87,7 +87,7 @@ fun RegisterScreen(
                 ) {
                     OutlinedTextField(
                         value = registerViewState.userName,
-                        placeholder = { Text(stringResource(R.string.login_username)) },
+                        placeholder = { Text(stringResource(R.string.username)) },
                         isError = registerViewState.showError,
                         onValueChange = onUserNameChange,
                     )

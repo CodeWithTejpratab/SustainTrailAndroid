@@ -10,6 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.unit.sp
 import com.sustenanceandroid.R
+import com.sustenanceandroid.ui.theme.EventsDateTextGray
 import com.sustenanceandroid.ui.theme.EventsMainTextDarkBlue
 import com.sustenanceandroid.ui.theme.Manrope
 import com.sustenanceandroid.ui.theme.Poppins
@@ -97,9 +98,10 @@ object TextStyles {
 
     @Composable
     fun eventDateText() = textDefault().copy(
-        fontSize = 18.sp,
+        fontSize = 14.sp,
         fontFamily = Manrope,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
+        color = EventsDateTextGray
     )
 
     @Composable

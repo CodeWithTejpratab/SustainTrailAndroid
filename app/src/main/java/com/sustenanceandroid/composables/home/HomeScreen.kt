@@ -39,6 +39,7 @@ import com.sustenanceandroid.composables.TextStyles
 import com.sustenanceandroid.model.AdPlus
 import com.sustenanceandroid.model.NewsSection
 import com.sustenanceandroid.model.ScoreData
+import com.sustenanceandroid.module.AppModule.firebaseAuthManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -99,7 +100,7 @@ private fun HomeTopPanel() {
         )
 
         Text(
-            text = stringResource(R.string.greeting, "user"),
+            text = stringResource(R.string.greeting, firebaseAuthManager.currentUserDisplayName),
             style = TextStyles.panelText()
         )
 

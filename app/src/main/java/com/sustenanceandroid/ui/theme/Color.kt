@@ -1,5 +1,7 @@
 package com.sustenanceandroid.ui.theme
 
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
@@ -20,6 +22,12 @@ val UnselectedIconColor = Color(0xFFFFFFFF)
 val OnboardingGreen = Color(0xFF37B943)
 val LinkColor = Color(0xFF00E0FF)
 val TransparentBrush = Brush.linearGradient(colors = listOf(Color.Transparent, Color.Transparent))
+val IconButtonCloseColor = IconButtonColors(
+    contentColor = Color.White,
+    containerColor = Color.Black,
+    disabledContentColor = Color.Unspecified,
+    disabledContainerColor = Color.Unspecified
+)
 
 // Sustain Score
 val SustainScoreGreen = Color(0xFF12BB39)
@@ -39,3 +47,9 @@ val EventsDateTextGray = Color(0xB2000000)
 val EventsSpotsRemainingRed = Color(0xFFFB6060)
 val EventsSpotsRemainingGreen = Color(0xFF4CAF50)
 val EventsSpotsRemainingBlue = Color(0xFF497BA4)
+val EventCardColor = CardColors(
+    containerColor = Color.White,
+    contentColor = Color.Unspecified,
+    disabledContainerColor = Color.Unspecified,
+    disabledContentColor = Color.Unspecified
+)

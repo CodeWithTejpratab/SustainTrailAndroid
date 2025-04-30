@@ -1,11 +1,7 @@
 package com.sustenanceandroid.composables.events
 
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.sustenanceandroid.mainScreen.BaseViewModel
 import com.sustenanceandroid.model.Exposition
-import com.sustenanceandroid.model.api.APIRepository
 import com.sustenanceandroid.model.api.Screen
 import com.sustenanceandroid.module.AppModule.apiRepository
 import kotlinx.coroutines.delay
@@ -14,13 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class EventViewModel(private val apiRepository: APIRepository) : BaseViewModel() {
-
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer { EventViewModel(apiRepository) }
-        }
-    }
+class EventViewModel : BaseViewModel() {
 
     data class UiState(
         val expositions: List<Exposition> = emptyList(),

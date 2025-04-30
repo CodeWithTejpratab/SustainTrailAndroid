@@ -40,6 +40,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.sustenanceandroid.R
 import com.sustenanceandroid.composables.TextStyles
 import com.sustenanceandroid.module.AppModule.firebaseAuthManager
@@ -48,7 +52,17 @@ import com.sustenanceandroid.module.Utils.launchCustomChromeTab
 import com.sustenanceandroid.ui.theme.ProfileUsernameDarkBlue
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory)) {
+fun ProfileNavGraph() {
+    val navController: NavHostController = rememberNavController()
+    NavHost(navController = navController, startDestination = "profile") {
+        composable("profile") { ProfileScreen(navController) }
+        composable("editUsername") { EditUsernameScreen(navController) }
+    }
+}
+
+@Composable
+private fun ProfileScreen(navController: NavHostController) {
+    val viewModel: ProfileViewModel = viewModel()
     val context = LocalContext.current
 
     ProfileHeading()
@@ -65,7 +79,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(factory = ProfileViewM
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.profile_content_spacing))
         ) {
             ProfilePicture(
-                username = "Jon Snow",
+                username = firebaseAuthManager.currentUserDisplayName,
                 profilePicture = Icons.Rounded.AccountCircle
             )
             ProfileMenuButtons(
@@ -75,7 +89,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(factory = ProfileViewM
                 onClickTerms = {
                     launchCustomChromeTab(context, resources.getString(R.string.term_url).toUri())
                 },
-                onClickEdit = { },
+                onClickEdit = { navController.navigate("editUsername") },
                 onClickLogout = { firebaseAuthManager.signOut() },
                 onClickDeleteAcct = { viewModel.deleteAccount() }
             )
@@ -216,5 +230,6 @@ fun ProfileButton(
 @Preview(showBackground = true)
 @Composable
 private fun ProfileScreenPreview() {
-    ProfileScreen()
+    val navController = rememberNavController()
+    ProfileScreen(navController)
 }

@@ -91,7 +91,7 @@ fun LogInScreen(
 
                     OutlinedTextField(
                         value = loginViewState.userName,
-                        placeholder = { Text(stringResource(R.string.login_username)) },
+                        placeholder = { Text(stringResource(R.string.username)) },
                         isError = loginViewState.showError,
                         onValueChange = onUserNameChange,
                     )

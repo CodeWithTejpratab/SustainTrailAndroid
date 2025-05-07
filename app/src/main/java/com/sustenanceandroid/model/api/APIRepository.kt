@@ -19,7 +19,8 @@ class APIRepository {
     companion object {
         private const val BASE_URL = "http://159.89.46.197:8000/"
         private const val TAG = "APP ERROR"
-        private val USER_ID = firebaseAuthManager.currentUserId
+        private val USER_ID: String
+            get() = firebaseAuthManager.currentUserId
     }
 
     private val gson = GsonBuilder()
@@ -85,7 +86,7 @@ class APIRepository {
     private suspend fun getExpositionType(screen: Screen, userId: String): Response<List<Exposition>> {
         return when (screen) {
             Screen.HOME -> apiService.getHomeExpositions(userId)
-            Screen.EVENTS -> apiService.getEventExpositions(userId)
+            Screen.EVENTS -> apiService.getEventExpositions()
         }
     }
 }

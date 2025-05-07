@@ -12,8 +12,8 @@ interface ApiService {
     @GET("api/home/{userId}")
     suspend fun getHomeExpositions(@Path("userId") userId: String): Response<List<Exposition>>
 
-    @GET("api/events/{userId}")
-    suspend fun getEventExpositions(@Path("userId") userId: String): Response<List<Exposition>>
+    @GET("api/events")
+    suspend fun getEventExpositions(): Response<List<Exposition>>
 
     @DELETE("api/user/{userId}")
     suspend fun deleteUser(@Path("userId") userId: String): Response<Unit>

@@ -96,7 +96,7 @@ private fun NewsCard(
             .clickable {
                 article.url?.let {
                     CoroutineScope(Dispatchers.Default).launch {
-                        apiRepository.sendActionEvent(article.category ?: "News")
+                        apiRepository.sendActionEvent("news")
                     }
                     launchCustomChromeTab(context, it.toUri())
                 }

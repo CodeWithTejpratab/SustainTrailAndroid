@@ -1,6 +1,7 @@
 package com.sustenanceandroid.composables.onboarding.login
 
 import com.sustenanceandroid.mainScreen.BaseViewModel
+import com.sustenanceandroid.module.AppModule.apiRepository
 import com.sustenanceandroid.module.AppModule.firebaseAuthManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -78,7 +79,11 @@ class LoginViewModel : BaseViewModel() {
             firebaseAuthManager.createAccount(
                 _registerViewState.value.email, _registerViewState.value.password
             ) { success ->
-                if (!success) _registerViewState.update { it.copy(showError = true) }
+                if (!success) {
+                    _registerViewState.update { it.copy(showError = true) }
+                } else {
+                    registerOnServer()
+                }
             }
         }
     }
@@ -92,6 +97,12 @@ class LoginViewModel : BaseViewModel() {
             ) { success ->
                 if (!success) _loginViewState.update { it.copy(showError = true) }
             }
+        }
+    }
+
+    private fun registerOnServer() {
+        launchCatchingBlock {
+            apiRepository.registerUser()
         }
     }
 }

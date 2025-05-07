@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
 
     private fun sendCheckInEvent() {
         lifecycleScope.launch {
-            apiRepository.sendActionEvent("Checkin")
+            apiRepository.sendActionEvent("checkin")
             firebaseAuthManager.updateProfile()
         }
     }

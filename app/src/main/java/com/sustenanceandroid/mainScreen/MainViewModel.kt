@@ -28,7 +28,7 @@ class MainViewModel : BaseViewModel() {
     val items = listOf(
         BottomNavItem(resources.getString(R.string.home), Icons.Filled.Home, Icons.Outlined.Home),
         BottomNavItem(resources.getString(R.string.environmental_news), Icons.Filled.Dehaze, Icons.Outlined.Dehaze),
-        BottomNavItem(resources.getString(R.string.location), Icons.Filled.LocationOn, Icons.Outlined.LocationOn),
+//        BottomNavItem(resources.getString(R.string.location), Icons.Filled.LocationOn, Icons.Outlined.LocationOn),
         BottomNavItem(resources.getString(R.string.profile), Icons.Filled.Person, Icons.Outlined.Person)
     )
 

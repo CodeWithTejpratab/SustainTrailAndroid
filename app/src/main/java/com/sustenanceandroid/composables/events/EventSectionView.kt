@@ -210,7 +210,7 @@ private fun SeeEventDetailsLink(url: String) {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.clickable {
             CoroutineScope(Dispatchers.Default).launch {
-                apiRepository.sendActionEvent("Events")
+                apiRepository.sendActionEvent("events")
             }
             val urlIntent = Intent(
                 Intent.ACTION_VIEW,

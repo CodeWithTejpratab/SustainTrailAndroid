@@ -3,6 +3,7 @@ package com.sustenanceandroid.model.api
 import android.util.Log
 import com.google.gson.GsonBuilder
 import com.sustenanceandroid.model.Exposition
+import com.sustenanceandroid.module.AppModule.firebaseAuthManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -16,9 +17,9 @@ enum class Screen {
 
 class APIRepository {
     companion object {
-        private const val BASE_URL = "http://10.0.2.2:8000"
+        private const val BASE_URL = "http://159.89.46.197:8000/"
         private const val TAG = "APP ERROR"
-        private const val USER_ID = "123"
+        private val USER_ID = firebaseAuthManager.currentUserId
     }
 
     private val gson = GsonBuilder()
@@ -31,6 +32,19 @@ class APIRepository {
         .build()
 
     private val apiService = retrofit.create(ApiService::class.java)
+
+    suspend fun registerUser(): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = apiService.registerUser(USER_ID)
+                Log.d(TAG, "Register user response: $USER_ID")
+                response.isSuccessful
+            } catch (e: Exception) {
+                e.localizedMessage?.let { Log.d(TAG, it) }
+                false
+            }
+        }
+    }
 
     suspend fun deleteUser(): Boolean {
         return withContext(Dispatchers.IO) {

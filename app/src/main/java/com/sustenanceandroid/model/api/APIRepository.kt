@@ -19,9 +19,10 @@ class APIRepository {
     companion object {
         private const val BASE_URL = "http://159.89.46.197:8000/"
         private const val TAG = "APP ERROR"
-        private val USER_ID: String
-            get() = firebaseAuthManager.currentUserId
     }
+
+    private val userID: String
+        get() = firebaseAuthManager.currentUserId
 
     private val gson = GsonBuilder()
         .registerTypeAdapter(Exposition::class.java, ExpositionDeserializer())
@@ -37,8 +38,7 @@ class APIRepository {
     suspend fun registerUser(): Boolean {
         return withContext(Dispatchers.IO) {
             try {
-                val response = apiService.registerUser(USER_ID)
-                Log.d(TAG, "Register user response: $USER_ID")
+                val response = apiService.registerUser(userID)
                 response.isSuccessful
             } catch (e: Exception) {
                 e.localizedMessage?.let { Log.d(TAG, it) }
@@ -50,7 +50,7 @@ class APIRepository {
     suspend fun deleteUser(): Boolean {
         return withContext(Dispatchers.IO) {
             try {
-                val response = apiService.deleteUser(USER_ID)
+                val response = apiService.deleteUser(userID)
                 response.isSuccessful
             } catch (e: Exception) {
                 e.localizedMessage?.let { Log.d(TAG, it) }
@@ -62,7 +62,7 @@ class APIRepository {
     suspend fun sendActionEvent(eventCategory: String): Boolean {
         return withContext(Dispatchers.IO) {
             try {
-                val response = apiService.postSustainScore(USER_ID, eventCategory)
+                val response = apiService.postSustainScore(userID, eventCategory)
                 response.isSuccessful
             } catch (e: Exception) {
                 e.localizedMessage?.let { Log.d(TAG, it) }
@@ -74,7 +74,7 @@ class APIRepository {
     suspend fun fetchExpositions(screen: Screen): List<Exposition>? {
         return withContext(Dispatchers.IO) {
             try {
-                val response = getExpositionType(screen, USER_ID)
+                val response = getExpositionType(screen, userID)
                 if (response.isSuccessful) response.body() else null
             } catch (e: Exception) {
                 e.localizedMessage?.let { Log.d(TAG, it) }

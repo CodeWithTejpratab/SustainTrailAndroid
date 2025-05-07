@@ -3,11 +3,9 @@ package com.sustenanceandroid.mainScreen
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Dehaze
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Dehaze
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.sustenanceandroid.R

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -29,8 +30,8 @@ import com.sustenanceandroid.model.AdPlus
 fun AdScreen(adPlus: AdPlus) {
     Column(
         modifier = Modifier
-            .background(Color.White)
-            .padding(6.dp)
+            .background(Color.White, shape = RoundedCornerShape(12.dp))
+            .padding(12.dp)
     ) {
         Text(
             text = adPlus.header.orEmpty(),
@@ -46,7 +47,9 @@ fun AdScreen(adPlus: AdPlus) {
             columns = GridCells.Adaptive(minSize = 128.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
         ) {
             items(adPlus.images.orEmpty()) { imageUrl ->
                 URLImage(
@@ -82,7 +85,7 @@ fun AddScreenPreview() {
         images = listOf(
             "https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg",
             "https://images.pexels.com/photos/1054655/pexels-photo-1054655.jpeg?cs=srgb&dl=pexels-hsapir-1054655.jpg&fm=jpg",
-            "https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg"
+            "https://fastly.picsum.photos/id/704/300/200.jpg?hmac=ZYJXPEuIsrZWX1oLPN_ut7C6wOCYv4dNn8uEkPhOl3Q"
         )
     }
 
